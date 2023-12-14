@@ -1,0 +1,3 @@
+[submodule "pxt-calliope"]
+	path = pxt-calliope
+	url = https://github.com/microsoft/pxt-calliope.git
