@@ -1,0 +1,86 @@
+CACHE MANIFEST
+
+CACHE:
+/pxt-calliope-app/semantic.js
+/pxt-calliope-app/main.js
+/pxt-calliope-app/pxtapp.js
+/pxt-calliope-app/typescript.js
+/pxt-calliope-app/marked/marked.min.js
+/pxt-calliope-app/highlight.js/highlight.pack.js
+/pxt-calliope-app/jquery.js
+/pxt-calliope-app/pxtlib.js
+/pxt-calliope-app/pxtcompiler.js
+/pxt-calliope-app/pxtpy.js
+/pxt-calliope-app/pxtblockly.js
+/pxt-calliope-app/pxteditor.js
+/pxt-calliope-app/pxtsim.js
+/pxt-calliope-app/pxtembed.js
+/pxt-calliope-app/pxtworker.js
+/pxt-calliope-app/pxtweb.js
+/pxt-calliope-app/blockly.css
+/pxt-calliope-app/semantic.css
+/pxt-calliope-app/rtlsemantic.css
+
+
+/pxt-calliope-app/editor.js
+/pxt-calliope-app/fieldeditors.js
+
+# blockly
+/pxt-calliope-app/blockly/media/sprites.png
+/pxt-calliope-app/blockly/media/click.mp3
+/pxt-calliope-app/blockly/media/disconnect.wav
+/pxt-calliope-app/blockly/media/delete.mp3
+
+# monaco; keep in sync with webapp/public/index.html
+/pxt-calliope-app/vs/loader.js
+/pxt-calliope-app/vs/base/worker/workerMain.js
+/pxt-calliope-app/vs/basic-languages/bat/bat.js
+/pxt-calliope-app/vs/basic-languages/cpp/cpp.js
+/pxt-calliope-app/vs/basic-languages/python/python.js
+/pxt-calliope-app/vs/basic-languages/typescript/typescript.js
+/pxt-calliope-app/vs/basic-languages/markdown/markdown.js
+/pxt-calliope-app/vs/editor/editor.main.css
+/pxt-calliope-app/vs/editor/editor.main.js
+/pxt-calliope-app/vs/editor/editor.main.nls.js
+/pxt-calliope-app/vs/language/json/jsonMode.js
+/pxt-calliope-app/vs/language/json/jsonWorker.js
+/pxt-calliope-app/vs/language/typescript/tsMode.js
+/pxt-calliope-app/vs/language/typescript/tsWorker.js
+
+# charts
+/pxt-calliope-app/smoothie/smoothie_compressed.js
+/pxt-calliope-app/images/Bars_black.gif
+
+# gifjs
+/pxt-calliope-app/gifjs/gif.js
+
+# ai
+/pxt-calliope-app/ai.0.js
+
+/pxt-calliope-app/worker.js
+/pxt-calliope-app/monacoworker.js
+
+# ver Thu Dec 14 2023 02:06:45 GMT+0000 (Coordinated Universal Time)
+
+# target
+/pxt-calliope-app/docs/static/Calliopeminieditor.svg
+/pxt-calliope-app/docs/static/Logo_Calliope_Woman.svg
+/pxt-calliope-app/docs/static/icons/apple-touch-icon.png
+/pxt-calliope-app/docs/static/Microsoft-logo_rgb_c-white.png
+/pxt-calliope-app/docs/static/calliope/hero/hero.jpg
+/pxt-calliope-app/docs/static/download/transfer.png
+/pxt-calliope-app/docs/static/download/connect.png
+/pxt-calliope-app/docs/static/download/pair.png
+/pxt-calliope-app/docs/static/download/connected.png
+/pxt-calliope-app/docs/static/download/firmware.png
+/pxt-calliope-app/docs/static/download/incompatible.png
+/pxt-calliope-app/docs/static/winapp.PNG
+/pxt-calliope-app/docs/static/profile/microbit-cloud.png
+/pxt-calliope-app/docs/static/providers/github-mark.png
+/pxt-calliope-app/docs/static/providers/microsoft-logo.svg
+/pxt-calliope-app/docs/static/providers/google-logo.svg
+
+/pxt-calliope-app/target.js
+
+NETWORK:
+*

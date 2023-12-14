@@ -1,0 +1,19 @@
+CACHE MANIFEST
+
+CACHE:
+/pxt-calliope-app/pxtsim.js
+/pxt-calliope-app/sim.js
+
+/pxt-calliope-app/sounds/giggle.wav
+/pxt-calliope-app/sounds/happy.wav
+/pxt-calliope-app/sounds/hello.wav
+/pxt-calliope-app/sounds/mysterious.wav
+/pxt-calliope-app/sounds/sad.wav
+/pxt-calliope-app/sounds/slide.wav
+/pxt-calliope-app/sounds/soaring.wav
+/pxt-calliope-app/sounds/spring.wav
+/pxt-calliope-app/sounds/twinkle.wav
+/pxt-calliope-app/sounds/yawn.wav
+
+NETWORK:
+*
