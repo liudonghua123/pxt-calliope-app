@@ -373,8 +373,8 @@
 					</button>
 					
     <div class="ui text">
-        <h1 id="serial">Serial</h1><p>The <a  rel="nofollow noopener" href="/pxt-calliope-app/docs/reference/serial.html">serial</a> supports <a target="_blank" rel="nofollow noopener" href="https://en.wikipedia.org/wiki/Serial_port">serial communication</a> between the BBC micro:bit and another computer. Basically, this allows you to send data from the micro:bit to your own computer. This is very useful for debugging purposes: you can add <code>write line</code> statements in your code and see them display on your computer as the program executes.</p>
-<p>The code below shows a simple script that sends a line when the BBC micro:bit starts and another line each time the button <code>A</code> is pressed.</p>
+        <h1 id="serial">Serial</h1><p>The <a  rel="nofollow noopener" href="/pxt-calliope-app/docs/reference/serial.html">serial</a> supports <a target="_blank" rel="nofollow noopener" href="https://en.wikipedia.org/wiki/Serial_port">serial communication</a> between the Calliope mini and another computer. Basically, this allows you to send data from the Calliope mini to your own computer. This is very useful for debugging purposes: you can add <code>write line</code> statements in your code and see them display on your computer as the program executes.</p>
+<p>The code below shows a simple script that sends a line when the Calliope mini starts and another line each time the button <code>A</code> is pressed.</p>
 <pre><code class="lang-blocks">serial.writeLine(&quot;started...&quot;)
 input.onButtonEvent(Button.A, input.buttonEventValue(ButtonEvent.Down), () =&gt; {
     serial.writeLine(&quot;A pressed&quot;)
@@ -384,12 +384,12 @@ and picked up by the editor. This data can be streamed to the cloud as well.</p>
 <pre><code class="lang-blocks">basic.forever(() =&gt; {
    led.plotBarGraph(input.acceleration(Dimension.X), 0);
 });</code></pre>
-<h2 id="how-to-read-the-micro-bit-s-serial-output-from-your-computer">How to read the micro:bit’s serial output from your computer</h2><p>Unfortunately, using the serial library requires quite a bit of a setup.</p>
+<h2 id="how-to-read-the-calliope-mini-serial-output-from-your-computer">How to read the Calliope mini serial output from your computer</h2><p>Unfortunately, using the serial library requires quite a bit of a setup.</p>
 
     <div class="ui info message">
         <div class="content">
             <p><strong>Windows earlier than 10</strong></p>
-<p>If you are running a Windows version earlier than 10, you must <a target="_blank" rel="nofollow noopener" href="https://os.mbed.com/docs/latest/tutorials/windows-serial-driver.html">install a device driver</a> (for the computer to recognize the serial interface of the micro:bit).</p>
+<p>If you are running a Windows version earlier than 10, you must <a target="_blank" rel="nofollow noopener" href="https://os.mbed.com/docs/latest/tutorials/windows-serial-driver.html">install a device driver</a> (for the computer to recognize the serial interface of the Calliope mini).</p>
 
         </div>
     </div>
@@ -397,14 +397,14 @@ and picked up by the editor. This data can be streamed to the cloud as well.</p>
 <h3 id="windows-gt-tera-term">Windows &gt; Tera Term</h3><ul>
 <li>Install the terminal emulator <a target="_blank" rel="nofollow noopener" href="https://ttssh2.osdn.jp/index.html.en">Tera Term</a>. At the time of this writing, the latest version is 4.88 and can be downloaded <a target="_blank" rel="nofollow noopener" href="http://en.osdn.jp/frs/redir.php?m=jaist&amp;f=%2Fttssh2%2F63767%2Fteraterm-4.88.exe">from here</a>. Follow the instructions from the installer.</li>
 </ul>
-<p>Once both the driver and the terminal emulator are installed, plug in the micro:bit and wait until the device is fully setup. Then, open TeraTerm.</p>
+<p>Once both the driver and the terminal emulator are installed, plug in the Calliope mini and wait until the device is fully setup. Then, open TeraTerm.</p>
 <ul>
 <li>Hit <code>File</code> &gt; <code>New Connection</code></li>
 <li>Check “Serial”; in the dropdown menu, pick the COM port that says “mbed Serial Port”. Hit <code>Ok</code>.</li>
 <li>In the menus, hit <code>Setup</code> &gt; <code>Serial Port</code> and set the baud rate to <code>115200</code>.</li>
 </ul>
 <p>You should be good. Feel free to hit <code>Setup</code> &gt; <code>Save Setup</code> in the menus to erase the default configuration file with a new one so that you don’t have to type in the settings again.</p>
-<p>Please note that Windows will assign you a different COM port if you plug in another micro:bit. If you’re juggling between micro:bits, you’ll have to change the COM port every time.</p>
+<p>Please note that Windows will assign you a different COM port if you plug in another Calliope mini. If you’re juggling between Calliope mini, you’ll have to change the COM port every time.</p>
 <h3 id="windows-gt-putty">Windows &gt; Putty</h3><p>If you prefer another terminal emulator (such as <a target="_blank" rel="nofollow noopener" href="http://www.putty.org/">PuTTY</a>), here are some instructions.</p>
 <ul>
 <li>Open Windows’s <a target="_blank" rel="nofollow noopener" href="https://windows.microsoft.com/en-us/windows/open-device-manager">Device Manager</a>; expand the section called “Ports (COM &amp; LPT)”; write down the com number for “mbed Serial Port” (e.g. COM14)</li>
@@ -417,9 +417,9 @@ and picked up by the editor. This data can be streamed to the cloud as well.</p>
 <p><img class="ui image" src="/static/mb/serial-library-1.png" alt="" loading="lazy"></p>
 <h2 id="linux">Linux</h2><ul>
 <li>Install the program <code>screen</code> if it is not already installed.</li>
-<li>Plug in the micro:bit.</li>
+<li>Plug in the Calliope mini.</li>
 <li>Open a terminal.</li>
-<li>Find which device node the micro:bit was assigned to with the command <code>ls /dev/ttyACM*</code>.</li>
+<li>Find which device node the Calliope mini was assigned to with the command <code>ls /dev/ttyACM*</code>.</li>
 <li>If it was <code>/dev/ttyACM0</code>, type the command <code>screen /dev/ttyACM0 115200</code>. If it was some other device node,
 use that one in the command instead. <strong>Note:</strong> You may need root access to run <code>screen</code>
 successfully. You can probably use the command <code>sudo</code> like this: <code>sudo screen /dev/ttyACM0 115200</code>.</li>
@@ -427,10 +427,10 @@ successfully. You can probably use the command <code>sudo</code> like this: <cod
 </ul>
 <p>Alternative programs include <code>minicom</code> and so on.</p>
 <h2 id="mac-os">Mac OS</h2><ul>
-<li>Plug in the micro:bit</li>
+<li>Plug in the Calliope mini</li>
 <li>Open a terminal</li>
 <li><code>ls /dev/cu.*</code> will return to you a list of serial devices; one of them will look like <code>/dev/cu.usbmodem1422</code> (the exact number depends on your computer)</li>
-<li><code>screen /dev/cu.usbmodem1422 115200</code> will open up the micro:bit’s serial output. To exit, hit <code>Ctrl-A</code> <code>Ctrl-D</code>.</li>
+<li><code>screen /dev/cu.usbmodem1422 115200</code> will open up the Calliope mini serial output. To exit, hit <code>Ctrl-A</code> <code>Ctrl-D</code>.</li>
 </ul>
 
     </div>

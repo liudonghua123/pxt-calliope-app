@@ -374,7 +374,7 @@
 					
     <div class="ui text">
         <h1 id="remote-data-collection">Remote data collection</h1><p>If you have more than one Calliope mini you can setup one of them to receive data sent by radio from other Calliope minis. Remote Calliope minis can take measurements and send them to a board that’s connected by USB to a computer. The Calliope mini connected to the computer is the data recorder and writes the received data to the serial port.</p>
-<p><img class="ui image" src="/static/mb/device/data-analysis/radio-zap.jpg" alt="Remote micro:bit sending" loading="lazy"></p>
+<p><img class="ui image" src="/static/mb/device/data-analysis/radio-zap.jpg" alt="Remote Calliope mini sending" loading="lazy"></p>
 <h2 id="receiver-calliope-mini">Receiver Calliope mini</h2><p>Connect the Calliope mini to a computer with a USB cable. The data received over radio is sent to the computer with this connection using writes to the serial port. If you have the <a target="_blank" rel="nofollow noopener" href="https://www.microsoft.com/store/apps/9PJC7SV48LCX">Windows 10 MakeCode</a> app, you can view the received data with the <a target="_blank" rel="nofollow noopener" href="./viewing">Data Viewer</a> in the editor. Otherwise, you need a <em>serial terminal</em> app or some other program that can read from the computer’s serial port.</p>
 <p>The receiving Calliope mini sets a radio group number on which to listen for incoming messages.</p>
 <pre><code class="lang-block">radio.setGroup(99)</code></pre>

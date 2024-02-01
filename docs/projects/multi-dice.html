@@ -373,35 +373,36 @@
 					</button>
 					
     <div class="ui text">
-        <h1 id="multi-dice">Multi Dice</h1><h2 id="introduction-">Introduction </h2><p><img class="ui image" src="/calliope/tutorials/10_multi_dice_animation.gif" alt="Multiple Calliope mini throwing a dice" loading="lazy"></p>
+        <h1 id="multi-dice">Multi Dice</h1><h2 id="introduction">Introduction</h2><p><img class="ui image" src="/calliope/tutorials/10_multi_dice_animation.gif" alt="Multiple Calliope mini throwing a dice" loading="lazy"></p>
 <p>Build a multi-player dice game using the <strong>radio</strong>. The <strong>radio</strong> blocks let you send wireless messages between a Calliope mini and another Calliope mini.</p>
 <p>In this game, you shake to “throw the dice” and send the result to the other Calliope mini. If you receive a result of a dice throw equal or greater than yours, you lose.</p>
-<h2 id="dice-game-">Dice game </h2><p>Let’s start by rebuilding the <strong>dice</strong> game. If you are unsure about the details, try the <strong>dice</strong> tutorial again.</p>
+<h2 id="dice-game">Dice game</h2><p>Let’s start by rebuilding the <strong>dice</strong> game. If you are unsure about the details, try the <strong>dice</strong> tutorial again.</p>
 <pre><code class="lang-blocks">input.onGesture(Gesture.Shake, function () {
-    basic.showNumber(Math.randomRange(1, 6))
+    basic.showNumber(randint(1, 6))
 })</code></pre>
-<h2 id="dice-variable-">Dice variable </h2><p>We need to store the result of the dice cast in a variable. A <strong>variable</strong> is like a place in the memory of the Calliope mini where you save information, like numbers.</p>
+<h2 id="dice-variable">Dice variable</h2><p>We need to store the result of the dice cast in a variable. A <strong>variable</strong> is like a place in the memory of the Calliope mini where you save information, like numbers.</p>
 <ul>
-<li>Go to the <strong>Variables</strong> toolbox and click <code>||Make a Variable||</code> to create a new variable. We will call it <strong>dice</strong>. </li>
-<li>Add a <code>||set dice to||</code> block and drag the <code>||pick random||</code> into it.</li>
-<li>Drag a <code>||dice||</code> from the <strong>Variables</strong> toolbox into the <code>||basic:show number||</code> block.</li>
+<li>Go to the <strong>Variables</strong> toolbox and click <code>Make a Variable</code> to create a new variable. We will call it <strong>dice</strong>.</li>
+<li>Add a <code>||variables:set dice to||</code> block and drag the <code>||math:pick random||</code> into it.</li>
+<li>Drag a <code>||variables:dice||</code> variable from the <strong>Variables</strong> toolbox into the <code>||basic:show number||</code> block.</li>
 </ul>
 <pre><code class="lang-blocks">let dice = 0
 input.onGesture(Gesture.Shake, function () {
-    dice = Math.randomRange(1, 6)
+    dice = randint(1, 6)
     basic.showNumber(dice)
 })</code></pre>
-<h2 id="send-the-dice-">Send the dice </h2><p>Put in a <code>||radio:send number||</code> and a <code>||dice||</code> to send the value stored in the <code>dice</code> variable via radio.</p>
-<pre><code class="lang-blocks">let dice = 0
+<h2 id="send-the-dice">Send the dice</h2><p>Put in a <code>||radio:send number||</code> and a <code>||variables:dice||</code> to send the value stored in the <code>||variables:dice||</code> variable via radio. Make sure to add a <code>||radio:set group||</code> to <code>||basic:on start||</code> with the group number set to the group you want to use.</p>
+<pre><code class="lang-blocks">radio.setGroup(1)
+let dice = 0
 input.onGesture(Gesture.Shake, function () {
-    dice = Math.randomRange(1, 6)
+    dice = randint(1, 6)
     basic.showNumber(dice)
     radio.sendNumber(dice)
 })</code></pre>
-<h2 id="receive-the-dice-">Receive the dice </h2><p>Go get an <code>||radio:on received number||</code> event block. This event runs when a radio message from another Calliope mini arrives. The <code>receivedNumber</code> value is the value of the dice in this game.</p>
+<h2 id="receive-the-dice">Receive the dice</h2><p>Go get an <code>||radio:on received number||</code> event block. This event runs when a radio message from another Calliope mini arrives. The <code>||variables:receivedNumber||</code> value is the value of the dice in this game.</p>
 <pre><code class="lang-blocks">radio.onReceivedNumber(function (receivedNumber) {
 })</code></pre>
-<h2 id="check-your-cast-">Check your cast </h2><p>Add a <code>||logic:if||</code> block to test if <code>receivedNumber</code> is greater or equal to <code>dice</code>. 
+<h2 id="check-your-cast">Check your cast</h2><p>Add a <code>||logic:if||</code> block to test if <code>||variables:receivedNumber||</code> is greater or equal to <code>||variables:dice||</code>.
 If is, you lost so display a sad face on the screen.</p>
 <pre><code class="lang-blocks">let dice = 0;
 radio.onReceivedNumber(function (receivedNumber) {
@@ -409,11 +410,12 @@ radio.onReceivedNumber(function (receivedNumber) {
         basic.showIcon(IconNames.Sad)
     }
 })</code></pre>
-<h2 id="test-it-">Test it! </h2><p>Try pressing <strong>SHAKE</strong> in the simulator and see that a second Calliope mini appears. You can play the game on both virtual boards.</p>
+<h2 id="test-it-">Test it!</h2><p>Try pressing <strong>SHAKE</strong> in the simulator and see that a second Calliope mini appears. You can play the game on both virtual boards.</p>
 <p>If you have more than one Calliope mini, download your code onto each one and try playing the game with your friends!</p>
 <pre><code class="lang-blocks">let dice = 0
+radio.setGroup(1)
 input.onGesture(Gesture.Shake, function () {
-    dice = Math.randomRange(1, 6)
+    dice = randint(1, 6)
     basic.showNumber(dice)
     radio.sendNumber(dice)
 })

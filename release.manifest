@@ -60,9 +60,10 @@ CACHE:
 /pxt-calliope-app/worker.js
 /pxt-calliope-app/monacoworker.js
 
-# ver Thu Dec 14 2023 02:06:45 GMT+0000 (Coordinated Universal Time)
+# ver Thu Feb 01 2024 23:22:35 GMT+0000 (Coordinated Universal Time)
 
 # target
+/pxt-calliope-app/docs/static/providers/github-mark.png
 /pxt-calliope-app/docs/static/Calliopeminieditor.svg
 /pxt-calliope-app/docs/static/Logo_Calliope_Woman.svg
 /pxt-calliope-app/docs/static/icons/apple-touch-icon.png
@@ -76,7 +77,6 @@ CACHE:
 /pxt-calliope-app/docs/static/download/incompatible.png
 /pxt-calliope-app/docs/static/winapp.PNG
 /pxt-calliope-app/docs/static/profile/microbit-cloud.png
-/pxt-calliope-app/docs/static/providers/github-mark.png
 /pxt-calliope-app/docs/static/providers/microsoft-logo.svg
 /pxt-calliope-app/docs/static/providers/google-logo.svg
 

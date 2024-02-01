@@ -380,12 +380,12 @@
         . # . # .
         # . # . #
         `);</code></pre>
-<p>The micro:bit LED screen has 25 red LED lights arranged in a 5X5 grid (5 LEDs across by 5 LEDs down).
+<p>The Calliope mini LED screen has 25 red LED lights arranged in a 5X5 grid (5 LEDs across by 5 LEDs down).
 In the screen above, we created a checkerboard pattern using the LEDs.</p>
 <h2 id="which-led-">Which LED?</h2><p>You use <code>(x ,y)</code> coordinates to specify a particular LED in the grid; 
 where <code>x</code> is the horizontal position (0,1,2,3,4) and <code>y</code> is the vertical position 
 (0, 1, 2, 3, 4). </p>
-<p>To figure out the <code>x</code>, <code>y</code> coordinates, position your micro:bit horizontally, like a credit card (see picture above).</p>
+<p>To figure out the <code>x</code>, <code>y</code> coordinates, position your Calliope mini horizontally, like a credit card (see picture above).</p>
 <p>Here are the x, y coordinates for the LEDs in the 5X5 grid:</p>
 <p><code>(0,0)</code> <code>(1,0)</code> <code>(2,0)</code> <code>(3,0)</code> <code>(4,0)</code></p>
 <p><code>(0,1)</code> <code>(1,1)</code> <code>(2,1)</code> <code>(3,1)</code> <code>(4,1)</code></p>
@@ -408,7 +408,7 @@ led.unplot(1,1);</code></pre>
 <pre><code class="lang-blocks">if(led.point(0,0)) {
 }</code></pre>
 <h2 id="display-images-strings-and-numbers">Display images, strings and numbers</h2><p>Instead of turning individual LEDs on or off, as above, you can display an <a  rel="nofollow noopener" href="/pxt-calliope-app/docs/reference/images/image.html">image</a> directly to the screen or show text and numbers on screen using the <a  rel="nofollow noopener" href="/pxt-calliope-app/docs/reference/basic/show-number.html">show number</a> and <a  rel="nofollow noopener" href="/pxt-calliope-app/docs/reference/basic/show-string.html">show string</a> functions.</p>
-<h2 id="the-display-buffer">The display buffer</h2><p>The micro:bit runtime keeps a representation of the state of all 25 LEDS in memory. This state is known as the “display buffer” and controls which LEDs are on and which are off. The plot, unplot, and point functions access the display buffer directly. On the other hand, the functions that show an image, number, or string overwrite the buffer completely. To illustrate this, first try running this code sequence</p>
+<h2 id="the-display-buffer">The display buffer</h2><p>The Calliope mini runtime keeps a representation of the state of all 25 LEDS in memory. This state is known as the “display buffer” and controls which LEDs are on and which are off. The plot, unplot, and point functions access the display buffer directly. On the other hand, the functions that show an image, number, or string overwrite the buffer completely. To illustrate this, first try running this code sequence</p>
 <pre><code class="lang-blocks">basic.showString(&quot;d&quot;)
 led.plot(0, 0)</code></pre>
 <p>You will see the letter “d” displayed as well as the LED in position <code>0,0</code> lit up. Now try reversing the order of the two statements above:</p>

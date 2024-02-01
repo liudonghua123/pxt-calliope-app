@@ -385,18 +385,18 @@
 <h2 id="text-output">Text output</h2><p>Text is formed by simply using string data. The text data is not recorded in the console until a complete “line” of text is written. A line is just a string with some special characters (ones you don’t actually see printed) at the end. You can write several strings, say:</p>
 <pre><code class="lang-block">serial.writeString(&quot;Hello &quot;);
 serial.writeString(&quot;from &quot;)
-serial.writeString(&quot;micro:bit&quot;)</code></pre>
+serial.writeString(&quot;Calliope mini&quot;)</code></pre>
 <p>This text, though, won’t appear in the editor console until it becomes a complete line. If you follow the string writes with a line in your code, then the line will show up:</p>
 <pre><code class="lang-block">serial.writeString(&quot;Hello &quot;)
 serial.writeString(&quot;from &quot;)
-serial.writeString(&quot;micro:bit&quot;)
+serial.writeString(&quot;Calliope mini&quot;)
 serial.writeLine(&quot;&quot;)</code></pre>
 <p>Text output is used mostly for messages since number formats have meaning when used for data analysis.</p>
 <p>The blank <code>||serial:serial write line||</code> adds the special line ending characters and turns the previous strings into a complete line of text. The whole line could simply be written out with just one function:</p>
-<pre><code class="lang-block">serial.writeLine(&quot;Hello from micro:bit&quot;)</code></pre>
+<pre><code class="lang-block">serial.writeLine(&quot;Hello from Calliope mini&quot;)</code></pre>
 <p>When you’re writing only text, it appears only in the console view and not in the chart window. This example writes four messages of text:</p>
 <pre><code class="lang-block">for (let i = 0; i &lt; 4; i++) {
-    serial.writeLine(&quot;Hello from micro:bit &quot; + i)
+    serial.writeLine(&quot;Hello from Calliope mini &quot; + i)
 }</code></pre>
 <p>The four messages appear in the console window:</p>
 <p><img class="ui image" src="/static/mb/device/data-analysis/console-output.jpg" alt="Console output" loading="lazy"></p>
