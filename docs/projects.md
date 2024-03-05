@@ -5,12 +5,12 @@
     {
         "name": "Tutorials",
         "url": "/calliope/tutorials",
-        "imageUrl": "/calliope/tutorials/01_flashing_heart.gif"
+        "imageUrl": "/docs/static/calliope/tutorials/01_flashing_heart.gif"
     },
     {
         "name": "Calliope Links",
         "url": "/calliope/links",
-        "imageUrl": "/calliope/links/thumbnail_shop.gif"
+        "imageUrl": "/docs/static/calliope/links/thumbnail_shop.gif"
     }
 ]
 ```

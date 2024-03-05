@@ -22,14 +22,14 @@
 <meta name="twitter:site" content="@msmakecode" />
 <meta name="twitter:title" content="Microsoft MakeCode for Calliope mini" />
 <meta name="twitter:description" content="A Blocks / JavaScript code editor for the Calliope mini powered by Microsoft MakeCode." />
-<meta name="twitter:image" content="/calliope/tutorials/05_love_meter_animation.gif" />
+<meta name="twitter:image" content="/static/calliope/tutorials/05_love_meter_animation.gif" />
 
 <meta property="og:title" content="Microsoft MakeCode for Calliope mini" />
 <meta property="og:site_name" content="Microsoft MakeCode" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="A Blocks / JavaScript code editor for the Calliope mini powered by Microsoft MakeCode." />
 <meta property="fb:app_id" content="" />
-<meta property="og:image" content="/calliope/tutorials/05_love_meter_animation.gif" />
+<meta property="og:image" content="/static/calliope/tutorials/05_love_meter_animation.gif" />
 
 <meta name="format-detection" content="telephone=no">
 <link rel="apple-touch-icon" href="docs/static/icons/apple-touch-icon.png">
@@ -374,7 +374,7 @@
 					
     <div class="ui text">
         <h1 id="love-meter">Love Meter</h1><h2 id="introduction-">Introduction </h2><p>Make a love meter, how sweet! The Calliope mini is feeling the love, then sometimes not so much!</p>
-<p><img class="ui image" src="/calliope/tutorials/05_love_meter_animation.gif" alt="Love meter banner message" loading="lazy"></p>
+<p><img class="ui image" src="/static/calliope/tutorials/05_love_meter_animation.gif" alt="Love meter banner message" loading="lazy"></p>
 <h2 id="step-1">Step 1</h2><p>Let’s build a <strong>LOVE METER</strong> machine. We’ll use an <code>||input:on pin pressed||</code> block to run code when pin <strong>0</strong> is pressed. Use <code>P0</code> from the list of pin inputs.</p>
 <pre><code class="lang-blocks">input.onPinTouchEvent(TouchPin.P0, input.buttonEventValue(ButtonEvent.Down), () =&gt; {
 });</code></pre>
@@ -389,7 +389,6 @@ input.onPinTouchEvent(TouchPin.P0, input.buttonEventValue(ButtonEvent.Down), () 
     basic.showNumber(randint(0, 100));
 });</code></pre>
 <h2 id="step-5">Step 5</h2><p>Click <code>|Download|</code> to transfer your code in your Calliope mini. Hold the <strong>GND</strong> pin with one hand and press pin <strong>0</strong> with the other hand to trigger this code.</p>
-<pre><code class="lang-template">input.onPinPressed(TouchPin.P0, function() {})</code></pre>
 
     </div>
 
