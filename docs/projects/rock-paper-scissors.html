@@ -489,8 +489,9 @@ input.onGesture(Gesture.Shake, function() {
 <h2 id="step-13">Step 13</h2><p>Let’s test your code! Press the white <strong>SHAKE</strong> button on the Calliope mini on-screen simulator, or move your cursor quickly back and forth over the simulator. Do you see the icons for rock, paper and scissors randomly appear?  ⭐ Great job! ⭐</p>
 <p><img class="ui image" src="/static/mb/projects/rock-paper-scissors/rpssim3.gif" alt="Shaking a Calliope mini simulator" loading="lazy"></p>
 <h2 id="step-14">Step 14</h2><p>If you have a Calliope mini device, connect it to your computer and click the <code>|Download|</code> button. Follow the instructions to transfer your code onto the Calliope mini. Once your code has been downloaded, attach your Calliope mini to a battery pack and challenge another Calliope mini or a human to a game of Rock, Paper, Scissors!</p>
-<h2 id="step-15">Step 15</h2><p>Go further - Try adding 🎵 Music 🎵 blocks to your Rock Paper Scissors game for different sound effects. Note that some Music blocks may require a Calliope mini v2 device to play.</p>
-<pre><code class="lang-blocks">let hand = 0
+<h2 id="step-15">Step 15</h2><p>Go further - Try adding 🎵 Music 🎵 blocks to your Rock Paper Scissors game for different sound effects. Note that some Music blocks may require a Calliope mini 3 device to play.</p>
+<pre><code class="lang-blocks">
+let hand = 0
 input.onGesture(Gesture.Shake, function () {
     hand = randint(1, 3)
     if (hand == 1) {
@@ -503,7 +504,8 @@ input.onGesture(Gesture.Shake, function () {
         basic.showIcon(IconNames.Scissors)
         music.play(music.createSoundExpression(WaveShape.Square, 1600, 1, 255, 0, 300, SoundExpressionEffect.None, InterpolationCurve.Curve), music.PlaybackMode.UntilDone)
     }
-})</code></pre>
+})
+</code></pre>
 <pre><code class="lang-blockconfig.global">randint(1, 3)</code></pre>
 <pre><code class="lang-template">input.onGesture(Gesture.Shake, function() {})</code></pre>
 
