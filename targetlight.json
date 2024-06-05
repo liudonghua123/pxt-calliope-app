@@ -440,8 +440,8 @@
     "uploadDocs": true,
     "versions": {
         "branch": "main",
-        "commits": "https://github.com/liudonghua123/pxt-calliope-app/commits/acedbf933944aa978f35de365bf78a0f7faa7e30",
-        "target": "6.0.37",
+        "commits": "https://github.com/liudonghua123/pxt-calliope-app/commits/92849d19ca00ea398ee0d9fc47151fe26169c56f",
+        "target": "6.0.38",
         "pxt": "9.0.18"
     },
     "blocksprj": {
