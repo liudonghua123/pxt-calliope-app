@@ -373,7 +373,21 @@
 					</button>
 					
     <div class="ui text">
-        <h1 id="35-1-smart-light">35 1 Smart-Light</h1><h2 id="task-">Task </h2><p>Write a program for a lamp that is switched on by clapping your hands and switched off again automatically after 5 seconds 👏.</p>
+        <h1 id="35-1-smart-light">35 1 Smart-Light</h1><pre><code class="lang-ghost">basic.forever(function () {
+if (input.lightLevel() &gt; 20) {
+    basic.showLeds(`
+        # # # # #
+        # # # # #
+        # # # # #
+        # # # # #
+        # # # # #
+        `)
+    basic.pause(5000)
+} else {
+  basic.clearScreen()
+}
+})</code></pre>
+<h2 id="task-">Task </h2><p>Write a program for a lamp that is switched on by clapping your hands and switched off again automatically after 5 seconds 👏.</p>
 <h2 id="create-if-else-statement">Create if/else statement</h2><p>Select a <code>||logic.if then else||</code> query from the logic blocks and insert it into the <code>||basic.forever||</code> loop.
 <br />
 The clapping is recognized via a permanent query of the measured volume values.</p>

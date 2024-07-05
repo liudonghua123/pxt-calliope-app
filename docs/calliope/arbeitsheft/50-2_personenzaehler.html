@@ -373,7 +373,26 @@
 					</button>
 					
     <div class="ui text">
-        <h1 id="50-2-people-counter">50 2 people counter</h1><h2 id="task-">Task </h2><p>Is the class complete?
+        <h1 id="50-2-people-counter">50 2 people counter</h1><pre><code class="lang-ghost">input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
+    basic.showNumber(Personenzähler)
+})
+input.onButtonEvent(Button.AB, input.buttonEventClick(), function () {
+    Personenzähler = 0
+})
+let Personenzähler = 0
+Personenzähler = 0
+let komplett = 20
+basic.forever(function () {
+    if (grove.measureInCentimeters(DigitalPin.C16) &lt; 10) {
+        Personenzähler += 1
+    }
+    if (Personenzähler &lt; komplett) {
+        basic.setLedColor(0xff0000)
+    } else {
+        basic.setLedColor(0x00ff00)
+    }
+})</code></pre>
+<h2 id="task-">Task </h2><p>Is the class complete?
 Use the ultrasonic sensor to check whether all the children are back in the classroom. Program a people counter to count the number of people entering the classroom.</p>
 <h2 id="define-variables">Define variables</h2><p>Create two variables at the beginning. One variable <code>||variables.peoplecounter||</code> for the number of people counted and one variable <code>||variables.complete||</code>. </p>
 <pre><code></code></pre><p><img class="ui image" src="image/variable" alt="image/variable" loading="lazy"></p>

@@ -373,7 +373,30 @@
 					</button>
 					
     <div class="ui text">
-        <h1 id="45-1-plant-station">45 1 Plant station</h1><h2 id="plant-station-ue">Plant station ue</h2><p>Programme a plant station that helps you to provide the plants in the classroom with the best possible care. Plants need <strong>water</strong>, <strong>sunlight</strong> and the right
+        <h1 id="45-1-plant-station">45 1 Plant station</h1><pre><code class="lang-ghost">input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
+    if (input.lightLevel() &gt; 50) {
+        basic.showIcon(IconNames.Yes)
+    } else {
+        basic.showLeds(`
+            # . # . #
+            . # # # .
+            # # # # #
+            . # # # .
+            # . # . #
+            `)
+    }
+})
+input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
+    basic.showNumber(input.temperature())
+})
+basic.forever(function () {
+if (grove.measureMoistureAnalog(AnalogPin.C16) &lt; 300) {
+      basic.setLedColor(0x00ff00)
+  } else {
+      basic.setLedColor(0xff0000)
+  }
+})</code></pre>
+<h2 id="plant-station-ue">Plant station ue</h2><p>Programme a plant station that helps you to provide the plants in the classroom with the best possible care. Plants need <strong>water</strong>, <strong>sunlight</strong> and the right
 <strong>temperature</strong> also plays an important role. </p>
 <h2 id="measure-temperature-ue">Measure temperature ue</h2><p><strong>Temperature</strong> - If button B is pressed, the temperature is displayed.</p>
 <h2 id="measure-temperature">Measure temperature</h2><p>To display the temperature, use the block <code>||input.on button A is clicked||</code>. Change the button by clicking on the drop-down menu of <code>||input.on button A is clicked||</code> and select <code>button B</code>.   </p>

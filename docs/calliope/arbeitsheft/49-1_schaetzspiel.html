@@ -373,7 +373,23 @@
 					</button>
 					
     <div class="ui text">
-        <h1 id="49-1-estimation-game">49 1 Estimation game</h1><h2 id="estimation-game-">Estimation  game </h2><p>Programme an estimation game that measures the distance between two objects. The
+        <h1 id="49-1-estimation-game">49 1 Estimation game</h1><pre><code class="lang-ghost">let Entfernung = 0
+input.onButtonEvent(Button.A, input.buttonEventValue(ButtonEvent.Click), function () {
+    Entfernung = Math.round(grove.measureInCentimeters(DigitalPin.C16))
+})
+input.onButtonEvent(Button.B, input.buttonEventValue(ButtonEvent.Click), function () {
+    basic.showNumber(Entfernung)
+})
+basic.forever(function () {
+    basic.showLeds(`
+        . # # . .
+        . . . # .
+        . . # . .
+        . . . . .
+        . . # . .
+        `)
+})</code></pre>
+<h2 id="estimation-game-">Estimation  game </h2><p>Programme an estimation game that measures the distance between two objects. The
 Calliope mini measures the distance - in secret. You estimate the distance and the Calliope mini solves and displays the measured distance. </p>
 <h2 id="task-ue">Task ue</h2><p>Press button A to measure the distance and save it in a variable. Press button B to show the saved value of the variable on the display.</p>
 <h2 id="buttons-add-events">Buttons Add events</h2><p>Insert the block <code>||input.on button A is clicked||</code> twice and change the button to <code>B</code> for one block. Tip: You can duplicate the block by right-clicking.</p>

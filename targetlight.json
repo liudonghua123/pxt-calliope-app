@@ -63,7 +63,6 @@
                 {
                     "type": "missingPackage",
                     "map": {
-                        "radio\\s*\\.": "radio",
                         "bluetooth\\s*\\.": "bluetooth",
                         "devices\\s*\\.": "devices"
                     }
@@ -132,6 +131,14 @@
                         "Motor\\s*\\.\\s*AB": "Motor.M0_M1",
                         "Motor\\s*\\.\\s*A": "Motor.M0",
                         "Motor\\s*\\.\\s*B": "Motor.M1"
+                    }
+                }
+            ],
+            "0.0.0 - 7.0.0": [
+                {
+                    "type": "missingPackage",
+                    "map": {
+                        "radio\\s*\\.": "funk"
                     }
                 }
             ]
@@ -440,8 +447,8 @@
     "uploadDocs": true,
     "versions": {
         "branch": "main",
-        "commits": "https://github.com/liudonghua123/pxt-calliope-app/commits/92849d19ca00ea398ee0d9fc47151fe26169c56f",
-        "target": "6.0.38",
+        "commits": "https://github.com/liudonghua123/pxt-calliope-app/commits/48e24a9a354306a84617f97df014b4cb27a4e440",
+        "target": "6.0.39",
         "pxt": "9.0.18"
     },
     "blocksprj": {
@@ -472,7 +479,7 @@
             "description": "",
             "dependencies": {
                 "core": "*",
-                "radio": "*"
+                "funk": "*"
             },
             "files": [
                 "main.ts",

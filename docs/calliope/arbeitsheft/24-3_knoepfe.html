@@ -373,7 +373,11 @@
 					</button>
 					
     <div class="ui text">
-        <h1 id="24-3_4-buttons">24 3_4 Buttons</h1><h2 id="tasks-">Tasks </h2><p>Make a <strong>smiley</strong> appear when <strong>button A</strong> is pressed and a <strong>sad smiley</strong> when <strong>button B</strong> is pressed. Add a matching color to both symbols.</p>
+        <h1 id="24-3_4-buttons">24 3_4 Buttons</h1><pre><code class="lang-ghost">input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
+ basic.showIcon(IconNames.Happy)
+ basic.setLedColor(0x00ff00)
+})</code></pre>
+<h2 id="tasks-">Tasks </h2><p>Make a <strong>smiley</strong> appear when <strong>button A</strong> is pressed and a <strong>sad smiley</strong> when <strong>button B</strong> is pressed. Add a matching color to both symbols.</p>
 <h2 id="control-button-a">Control button A</h2><p>Select the block <code>||input.on button A||</code> is clicked as input.</p>
 <h2 id="display-symbol-and-color">Display symbol and color</h2><p>Use the <code>||basic.show symbol||</code> block and make a smiley appear on the LED matrix. Add the <code>||basic.set LED to||</code> block to your program and let the RGB LED light up <code>green</code>.</p>
 <h2 id="control-button-b">Control button B</h2><p>Place another block <code>|| input.on button A ||</code> clicked and change it to <code>|| input.on button B ||</code> clicked.</p>
