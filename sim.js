@@ -2962,6 +2962,9 @@ var pxsim;
             background: #42c9c9;
             font-family: 'Roboto Mono', monospace;
         }
+        button {
+            user-select: none;
+        }
         button:hover {
             opacity: .7;
         }
@@ -2989,7 +2992,7 @@ var pxsim;
         .sim-board, .sim-display, sim-button {
             fill: #111;
         }
-        .sim-button-outer:hover {
+        .sim-button-outer.hover {
             stroke:grey;
             stroke-width: 3px;
         }
@@ -3000,10 +3003,7 @@ var pxsim;
         .sim-button-nut:hover {
             stroke:1px solid #704A4A;
         }
-        .sim-pin {
-            cursor: pointer;
-        }
-        .sim-pin:hover {
+        .sim-pin.hover {
             stroke:#D4AF37;
             stroke-width:2px;
         }
@@ -3141,7 +3141,7 @@ var pxsim;
             outline: none;
         }
         *:focus .sim-button-outer,
-        .sim-pin:focus,
+        .sim-pin.focused,
         .sim-thermometer:focus,
         .sim-shake:focus,
         .sim-light-level-button:focus {
@@ -3167,19 +3167,25 @@ var pxsim;
             10%, 90% {
               transform: translate3d(-1px, 0, 0);
             }
-            
+
             20%, 80% {
               transform: translate3d(2px, 0, 0);
             }
-          
+
             30%, 50%, 70% {
               transform: translate3d(-4px, 0, 0);
             }
-          
+
             40%, 60% {
               transform: translate3d(4px, 0, 0);
             }
           }
+
+        .button-rect {
+            cursor: pointer;
+            fill: white;
+            fill-opacity: 0;
+        }
     `;
         // const BOARD_SVG = pxsim.svg;
         const BOARD_SVG_HEAD = `<?xml version="1.0" encoding="utf-8"?>
@@ -3217,28 +3223,28 @@ var pxsim;
 </style><g id="calliope_mini">`;
         const BOARD_SVG_BOTTOM = `<g id="all">
 	<g id="Batterie">
-		<polygon class="st14" points="427.2,316.3 425.1,319 424.7,318.7 424,318.2 423.6,317.8 422.8,317.3 422.4,316.9 422.4,316.9 
-			422,316.6 421.9,316.5 413.4,309.9 413.4,309.9 413.4,309.9 413.3,309.8 413.3,309.8 411.7,307.7 411.7,307.6 412.9,306.1 
-			412.9,306.1 415.4,307.2 415.5,307.2 415.5,307.3 423.2,313.3 424,313.9 424.1,314 424.3,314.1 424.4,314.2 424.5,314.3 
+		<polygon class="st14" points="427.2,316.3 425.1,319 424.7,318.7 424,318.2 423.6,317.8 422.8,317.3 422.4,316.9 422.4,316.9
+			422,316.6 421.9,316.5 413.4,309.9 413.4,309.9 413.4,309.9 413.3,309.8 413.3,309.8 411.7,307.7 411.7,307.6 412.9,306.1
+			412.9,306.1 415.4,307.2 415.5,307.2 415.5,307.3 423.2,313.3 424,313.9 424.1,314 424.3,314.1 424.4,314.2 424.5,314.3
 			424.9,314.6 425.7,315.2 426.1,315.5 426.8,316 		"/>
-		<polygon class="st14" points="418.8,327 416.7,329.7 416.3,329.4 415.7,328.9 415.2,328.5 414.5,328 414.1,327.6 413.7,327.3 
-			413.6,327.2 405.1,320.6 405.1,320.6 405,320.6 405,320.5 403.4,318.3 403.3,318.3 404.5,316.8 404.6,316.8 407,317.9 
+		<polygon class="st14" points="418.8,327 416.7,329.7 416.3,329.4 415.7,328.9 415.2,328.5 414.5,328 414.1,327.6 413.7,327.3
+			413.6,327.2 405.1,320.6 405.1,320.6 405,320.6 405,320.5 403.4,318.3 403.3,318.3 404.5,316.8 404.6,316.8 407,317.9
 			407.2,317.9 415.6,324.5 415.8,324.6 415.9,324.8 416.1,324.9 416.2,325 416.6,325.3 417.3,325.8 417.8,326.2 418.4,326.7 		"/>
-		<polygon class="st15" points="425.9,337.3 425.9,337.3 423.7,340.1 420.5,337.6 418.5,340.1 412.4,335.3 414.4,332.8 416.5,330 
+		<polygon class="st15" points="425.9,337.3 425.9,337.3 423.7,340.1 420.5,337.6 418.5,340.1 412.4,335.3 414.4,332.8 416.5,330
 			422.7,334.8 		"/>
-		<polygon class="st15" points="438.9,320.6 436.7,323.4 433.5,320.9 427.4,316.1 429.6,313.3 431.6,310.8 437.7,315.6 435.7,318.1 
+		<polygon class="st15" points="438.9,320.6 436.7,323.4 433.5,320.9 427.4,316.1 429.6,313.3 431.6,310.8 437.7,315.6 435.7,318.1
 					"/>
 		<polygon class="st15" points="408.8,339.8 405.5,344.1 396.9,337.5 400.3,333.2 		"/>
 		<polygon class="st15" points="438.4,301.9 435.1,306.2 426.5,299.5 429.9,295.3 		"/>
-		<polygon class="st16" points="468.4,329.6 466.7,331.8 464.2,335 463.6,335.8 461.6,338.3 455.3,346.5 452.7,349.7 446.4,357.8 
-			444.4,360.3 443.8,361.1 441.3,364.3 439.6,366.5 439.2,366.1 438.5,365.6 435.3,363.1 435.3,363.1 433.2,365.8 421.5,356.6 
-			408.6,346.6 405.5,344.1 408.8,339.8 412.4,335.3 418.5,340.1 421.7,342.6 433.7,352 435.7,349.5 437.9,346.7 432.7,342.6 
-			425.9,337.3 422.7,334.8 416.5,330 416.7,329.7 418.8,327 425.1,319 427.2,316.3 427.4,316.1 433.5,320.9 436.7,323.4 
-			448.7,332.8 450.9,330 452.9,327.4 440.9,318 437.7,315.6 431.6,310.8 435.1,306.2 438.4,301.9 441.6,304.4 454.5,314.5 
+		<polygon class="st16" points="468.4,329.6 466.7,331.8 464.2,335 463.6,335.8 461.6,338.3 455.3,346.5 452.7,349.7 446.4,357.8
+			444.4,360.3 443.8,361.1 441.3,364.3 439.6,366.5 439.2,366.1 438.5,365.6 435.3,363.1 435.3,363.1 433.2,365.8 421.5,356.6
+			408.6,346.6 405.5,344.1 408.8,339.8 412.4,335.3 418.5,340.1 421.7,342.6 433.7,352 435.7,349.5 437.9,346.7 432.7,342.6
+			425.9,337.3 422.7,334.8 416.5,330 416.7,329.7 418.8,327 425.1,319 427.2,316.3 427.4,316.1 433.5,320.9 436.7,323.4
+			448.7,332.8 450.9,330 452.9,327.4 440.9,318 437.7,315.6 431.6,310.8 435.1,306.2 438.4,301.9 441.6,304.4 454.5,314.5
 			466.2,323.6 464.1,326.3 464.1,326.3 467.3,328.8 468,329.3 		"/>
-		<polygon class="st17" points="452.9,327.4 450.9,330 448.7,332.8 436.7,323.4 436.7,323.4 438.9,320.6 435.7,318.1 437.7,315.6 
+		<polygon class="st17" points="452.9,327.4 450.9,330 448.7,332.8 436.7,323.4 436.7,323.4 438.9,320.6 435.7,318.1 437.7,315.6
 			440.9,318 		"/>
-		<polygon class="st17" points="437.9,346.7 435.7,349.5 433.7,352 421.7,342.6 418.5,340.1 420.5,337.6 423.7,340.1 425.9,337.3 
+		<polygon class="st17" points="437.9,346.7 435.7,349.5 433.7,352 421.7,342.6 418.5,340.1 420.5,337.6 423.7,340.1 425.9,337.3
 			432.7,342.6 		"/>
 	</g>
 	<g id="USB-C_Vorne">
@@ -3428,38 +3434,38 @@ var pxsim;
 			l1.2,0.6l-1.7,3.7L109,188l-22.7-10.6c1.3-2.9,3.6-7.5,4.9-10.4l0,0c1.1-2.2,4.7-9.9,5.6-12l0,0c4.6-9.8,9.9-21.2,14.5-31
 			l22.7,10.6l1.2,0.6l-1.7,3.7c-0.8-0.4-4-1.9-4.9-2.3c-0.7,1.7-2.4,5.1-3.2,6.7l3.7,1.7l1.4-3l5.6,2.6l5.1-11.1l-6-2.9
 			c-7.2-3.3-18.6-8.6-25.9-12.1C100,138.5,90.3,159.5,80.9,179.4z"/>
-		<polygon class="st15" points="133.2,126.8 132,129.2 135.7,130.9 135.7,130.9 141.2,133.5 144.1,127.4 138.6,124.8 133,122.2 
+		<polygon class="st15" points="133.2,126.8 132,129.2 135.7,130.9 135.7,130.9 141.2,133.5 144.1,127.4 138.6,124.8 133,122.2
 			131.3,125.9 		"/>
 		<polygon class="st15" points="99,195.3 104.5,197.8 110,200.4 112.9,194.3 107.3,191.7 103.7,190 102.5,192.5 100.7,191.6 		"/>
 		<path class="st17" d="M86.3,177.4L109,188l1.3,0.6l1.7-3.7c-0.8-0.4-4-1.9-4.9-2.3c6.9-15.2,14.5-30.9,21.5-46
 			c0.9,0.4,4.1,1.9,4.9,2.3l1.7-3.7l-1.5-0.7L111.3,124C103,141.4,94.6,160,86.3,177.4z"/>
-		<polygon class="st14" points="129.1,145 129.1,145.1 129.1,145.1 141.4,150.8 144.1,151.3 145,149.5 142.8,147.7 136.1,144.6 
+		<polygon class="st14" points="129.1,145 129.1,145.1 129.1,145.1 141.4,150.8 144.1,151.3 145,149.5 142.8,147.7 136.1,144.6
 			130.5,142 		"/>
-		<polygon class="st15" points="110.3,175.9 113.9,177.6 114.8,175.8 116.5,172.1 118.1,168.7 119.5,165.6 123.5,157 125,154 
-			125,153.9 126.6,150.5 128.3,146.9 129.1,145.1 129.1,145 125.4,143.3 124.6,145.2 124.6,145.2 121.3,152.2 119.8,155.3 
+		<polygon class="st15" points="110.3,175.9 113.9,177.6 114.8,175.8 116.5,172.1 118.1,168.7 119.5,165.6 123.5,157 125,154
+			125,153.9 126.6,150.5 128.3,146.9 129.1,145.1 129.1,145 125.4,143.3 124.6,145.2 124.6,145.2 121.3,152.2 119.8,155.3
 			119.8,155.3 115.8,163.9 115.8,163.9 114.4,167 114.4,167 111.1,174 		"/>
 		<polygon class="st14" points="128.4,159.3 135.8,162.8 138.6,163.3 139.4,161.4 137.2,159.7 129.9,156.2 		"/>
-		<polygon class="st17" points="116.5,172.1 121.4,174.4 123,171 124.4,167.9 128.4,159.3 129.9,156.2 131.5,152.8 126.6,150.5 
+		<polygon class="st17" points="116.5,172.1 121.4,174.4 123,171 124.4,167.9 128.4,159.3 129.9,156.2 131.5,152.8 126.6,150.5
 			125,153.9 125,154 123.5,157 119.5,165.6 118.1,168.7 		"/>
 		<polygon class="st14" points="123,171 130.4,174.4 133.1,174.9 134,173.1 131.8,171.4 124.4,167.9 		"/>
 		<polygon class="st14" points="112.5,180.7 118,183.2 124.8,186.4 127.5,186.9 128.4,185.1 126.2,183.3 113.9,177.6 		"/>
 		<polygon class="st12" points="118.9,115.6 117.2,119.3 114.1,117.9 113,120.3 132,129.2 133.2,126.8 131.3,125.9 133,122.2 		"/>
-		<polyline class="st12" points="84.6,181.1 83.5,183.6 86.6,185 84.8,188.7 99,195.3 100.7,191.6 102.5,192.5 103.7,190 
+		<polyline class="st12" points="84.6,181.1 83.5,183.6 86.6,185 84.8,188.7 99,195.3 100.7,191.6 102.5,192.5 103.7,190
 			101.8,189.1 100.8,188.6 87.7,182.5 84.6,181.1 		"/>
 		<g id="G_A0_GND">
 			<polygon class="st9" points="114.4,138.2 117.4,139.6 118.9,136.5 118.3,136.2 116.4,135.4 115.8,135.1 			"/>
 			<polygon class="st21" points="109.2,140.2 119.2,144.9 124.2,134.5 122.2,133.5 115.8,130.8 113.8,129.9 			"/>
 		</g>
 		<g id="G_A0_VCC">
-			<polygon class="st9" points="108.8,150.2 109.1,150.3 109.4,150.4 111.2,151.3 111.2,151.3 111.9,151.6 113.3,148.5 110.2,147.1 
+			<polygon class="st9" points="108.8,150.2 109.1,150.3 109.4,150.4 111.2,151.3 111.2,151.3 111.9,151.6 113.3,148.5 110.2,147.1
 							"/>
-			<polygon class="st21" points="103.6,152.2 104.5,152.5 105.5,152.8 111.5,155.8 111.5,155.8 113.9,156.9 118.6,146.5 
+			<polygon class="st21" points="103.6,152.2 104.5,152.5 105.5,152.8 111.5,155.8 111.5,155.8 113.9,156.9 118.6,146.5
 				108.2,141.9 			"/>
 		</g>
 		<g id="G_A0_SDA">
-			<polygon class="st9" points="103.4,161.8 106.4,163.3 107.8,160.2 107.8,160.2 107.8,160.2 107.2,159.9 105.4,159.1 105.4,159 
+			<polygon class="st9" points="103.4,161.8 106.4,163.3 107.8,160.2 107.8,160.2 107.8,160.2 107.2,159.9 105.4,159.1 105.4,159
 				104.8,158.8 			"/>
-			<polygon class="st21" points="98.1,163.6 108.3,168.7 113.1,158.2 113.1,158.2 113.1,158.2 111.1,157.1 104.9,154.4 104.9,154.1 
+			<polygon class="st21" points="98.1,163.6 108.3,168.7 113.1,158.2 113.1,158.2 113.1,158.2 111.1,157.1 104.9,154.4 104.9,154.1
 				102.9,153.4 			"/>
 		</g>
 		<g id="G_A0_SCL">
@@ -3472,15 +3478,15 @@ var pxsim;
 		<path class="st10" d="M457.6,203.1l-6.2-6.2l7.4-7.4l6.2,6.2L457.6,203.1z"/>
 		<path class="st10" d="M441.1,262.9l-6.2-6.2l7.4-7.4l6.2,6.2L441.1,262.9z"/>
 		<path class="st10" d="M479.2,224.7l-6.2-6.2l7.4-7.4l6.2,6.2L479.2,224.7z"/>
-		<polygon class="st12" points="437.4,256.9 440.7,260.2 443.2,257.8 443.2,257.8 443.3,257.6 443.7,257.3 444.2,256.7 444.5,256.4 
-			444.7,256.2 445.1,255.8 445.7,255.2 447.9,253 444.5,249.7 441.8,252.4 441.3,252.9 441.2,253 440.9,253.4 440.3,253.9 
+		<polygon class="st12" points="437.4,256.9 440.7,260.2 443.2,257.8 443.2,257.8 443.3,257.6 443.7,257.3 444.2,256.7 444.5,256.4
+			444.7,256.2 445.1,255.8 445.7,255.2 447.9,253 444.5,249.7 441.8,252.4 441.3,252.9 441.2,253 440.9,253.4 440.3,253.9
 			439.8,254.4 439.4,254.8 		"/>
-		<polygon class="st12" points="473.3,220.9 476.6,224.3 478.8,222.1 479.4,221.5 479.8,221.1 480,220.9 480.3,220.6 480.9,220.1 
+		<polygon class="st12" points="473.3,220.9 476.6,224.3 478.8,222.1 479.4,221.5 479.8,221.1 480,220.9 480.3,220.6 480.9,220.1
 			481.2,219.7 483.8,217.1 480.5,213.8 478.4,215.8 478,216.2 477.5,216.7 477,217.3 476.6,217.6 476.5,217.7 476,218.2 		"/>
-		<polygon class="st12" points="451.7,199.4 455.1,202.7 457.2,200.6 457.8,200 458.3,199.5 458.4,199.4 458.7,199.1 459.8,198 
-			459.8,198 460.2,197.6 462.3,195.5 458.9,192.2 456.3,194.8 455.9,195.2 455.4,195.7 455.1,196 454.9,196.2 454.5,196.6 
+		<polygon class="st12" points="451.7,199.4 455.1,202.7 457.2,200.6 457.8,200 458.3,199.5 458.4,199.4 458.7,199.1 459.8,198
+			459.8,198 460.2,197.6 462.3,195.5 458.9,192.2 456.3,194.8 455.9,195.2 455.4,195.7 455.1,196 454.9,196.2 454.5,196.6
 			453.9,197.2 		"/>
-		<polygon class="st12" points="415.8,235.3 419.1,238.7 421.6,236.2 421.6,236.2 421.8,236 423.1,234.7 423.6,234.2 424.2,233.6 
+		<polygon class="st12" points="415.8,235.3 419.1,238.7 421.6,236.2 421.6,236.2 421.8,236 423.1,234.7 423.6,234.2 424.2,233.6
 			426.3,231.5 423,228.1 420.2,230.9 419.8,231.3 419.6,231.5 419.3,231.8 418.8,232.4 418.4,232.7 		"/>
 		<path d="M426.7,228.6c1.3,1.3,3.5,1.3,4.8,0s1.3-3.5,0-4.8s-3.5-1.3-4.8,0C425.3,225.1,425.3,227.3,426.7,228.6z"/>
 		<path d="M447.4,207.9c1.3,1.3,3.5,1.3,4.8,0s1.3-3.5,0-4.8s-3.5-1.3-4.8,0S446.1,206.5,447.4,207.9z"/>
@@ -3500,13 +3506,13 @@ var pxsim;
 		<path class="st10" d="M54.2,218.5l-6.2,6.2l-7.4-7.4l6.2-6.2L54.2,218.5z"/>
 		<path class="st10" d="M113.9,235l-6.2,6.2l-7.4-7.4l6.2-6.2L113.9,235z"/>
 		<path class="st10" d="M75.7,196.9l-6.2,6.2l-7.4-7.4l6.2-6.2L75.7,196.9z"/>
-		<polygon class="st12" points="90,256.9 86.6,260.2 84.1,257.8 84.1,257.8 84,257.6 83.6,257.3 83.1,256.7 82.8,256.4 82.6,256.2 
+		<polygon class="st12" points="90,256.9 86.6,260.2 84.1,257.8 84.1,257.8 84,257.6 83.6,257.3 83.1,256.7 82.8,256.4 82.6,256.2
 			82.2,255.8 81.6,255.2 79.4,253 82.8,249.7 85.5,252.4 86,252.9 86.1,253 86.4,253.4 87,253.9 87.5,254.4 87.9,254.8 		"/>
-		<polygon class="st12" points="54,220.9 50.7,224.3 48.5,222.1 47.9,221.6 47.5,221.1 47.3,220.9 47,220.6 46.4,220.1 46.1,219.7 
+		<polygon class="st12" points="54,220.9 50.7,224.3 48.5,222.1 47.9,221.6 47.5,221.1 47.3,220.9 47,220.6 46.4,220.1 46.1,219.7
 			43.5,217.1 46.8,213.8 48.9,215.8 49.3,216.2 49.8,216.7 50.3,217.3 50.7,217.6 50.8,217.8 51.3,218.2 		"/>
-		<polygon class="st12" points="75.6,199.4 72.2,202.7 70.1,200.6 69.5,200 69,199.5 68.9,199.4 68.6,199.1 67.5,198 67.5,198 
+		<polygon class="st12" points="75.6,199.4 72.2,202.7 70.1,200.6 69.5,200 69,199.5 68.9,199.4 68.6,199.1 67.5,198 67.5,198
 			67.1,197.6 65,195.5 68.4,192.2 71,194.8 71.4,195.2 71.9,195.7 72.2,196 72.4,196.2 72.8,196.6 73.4,197.2 		"/>
-		<polygon class="st12" points="111.5,235.3 108.2,238.7 105.7,236.2 105.7,236.2 105.5,236 104.2,234.7 103.7,234.2 103.1,233.6 
+		<polygon class="st12" points="111.5,235.3 108.2,238.7 105.7,236.2 105.7,236.2 105.5,236 104.2,234.7 103.7,234.2 103.1,233.6
 			101,231.5 104.3,228.1 107.1,230.9 107.5,231.3 107.7,231.5 108,231.8 108.5,232.4 108.9,232.7 		"/>
 		<path d="M100.6,228.6c-1.3,1.3-3.5,1.3-4.8,0s-1.3-3.5,0-4.8s3.5-1.3,4.8,0C102,225.1,102,227.3,100.6,228.6z"/>
 		<path d="M79.9,207.9c-1.3,1.3-3.5,1.3-4.8,0s-1.3-3.5,0-4.8s3.5-1.3,4.8,0C81.2,204.4,81.2,206.5,79.9,207.9z"/>
@@ -4341,6 +4347,7 @@ var pxsim;
                 this.props = props;
                 this.headInitialized = false;
                 this.domHardwareVersion = 1;
+                this.pinDragSurfaces = {};
                 this.pinNmToCoord = {
                     "EXT_PWR": [
                         92.30997467041016,
@@ -4783,6 +4790,7 @@ var pxsim;
             updatePin(pin, index) {
                 if (!pin)
                     return;
+                const element = this.pinDragSurfaces[pin.id];
                 let text = this.pinTexts[pin.id];
                 let v = "";
                 if (pin.mode & pxsim.PinFlags.Analog) {
@@ -4807,13 +4815,13 @@ var pxsim;
                 }
                 if (v)
                     pxsim.svg.setGradientValue(this.pinGradients[index], v);
-                if (pin.mode !== pxsim.PinFlags.Unused) {
-                    pxsim.accessibility.makeFocusable(this.pins[index]);
-                    pxsim.accessibility.setAria(this.pins[index], "slider", this.pins[index].firstChild.textContent);
-                    this.pins[index].setAttribute("aria-valuemin", "0");
-                    this.pins[index].setAttribute("aria-valuemax", pin.mode & pxsim.PinFlags.Analog ? "1023" : "100");
-                    this.pins[index].setAttribute("aria-orientation", "vertical");
-                    this.pins[index].setAttribute("aria-valuenow", text ? text.textContent : v);
+                if (pin.mode !== pxsim.PinFlags.Unused && element) {
+                    pxsim.accessibility.makeFocusable(element);
+                    pxsim.accessibility.setAria(element, "slider", element.firstChild.textContent);
+                    element.setAttribute("aria-valuemin", "0");
+                    element.setAttribute("aria-valuemax", pin.mode & pxsim.PinFlags.Analog ? "1023" : "100");
+                    element.setAttribute("aria-orientation", "vertical");
+                    element.setAttribute("aria-valuenow", text ? text.textContent : v);
                     pxsim.accessibility.setLiveContent(text ? text.textContent : v);
                 }
             }
@@ -5269,6 +5277,7 @@ var pxsim;
                 // abtext.textContent = "A+B";
                 this.buttonsOuter[2].style.visibility = "hidden";
                 this.buttons[2].style.visibility = "hidden";
+                this.buttonGroup = pxsim.svg.child(this.element, "g");
             }
             mkBtn(left, top, text) {
                 const btnr = 2;
@@ -5305,12 +5314,14 @@ var pxsim;
                 return { outer, inner };
             }
             attachEvents() {
-                this.attachIFrameEvents();
-                this.attachAccelerometerEvents();
-                this.attachPinsIOEvents();
-                this.attachPinsTouchEvents();
-                this.attachABEvents();
-                this.attachAPlusBEvents();
+                // wait until we're actually in the dom
+                setTimeout(() => {
+                    this.attachIFrameEvents();
+                    this.attachAccelerometerEvents();
+                    this.attachPinsTouchEvents();
+                    this.attachABEvents();
+                    this.attachAPlusBEvents();
+                });
             }
             attachIFrameEvents() {
                 pxsim.Runtime.messagePosted = (msg) => {
@@ -5375,149 +5386,177 @@ var pxsim;
                     }
                 }, false);
             }
-            attachPinsIOEvents() {
-                this.pins.slice(0, 4).forEach((pin, index) => {
-                    // var index = i + 2;
-                    if (!this.board.edgeConnectorState.pins[index])
-                        return;
+            attachPinsTouchEvents() {
+                const pins = this.pins.slice(0, 5);
+                for (let index = 0; index < pins.length; index++) {
+                    const pin = pins[index];
+                    const boundingBox = pin.getBBox();
+                    const eventSurface = pxsim.svg.child(this.buttonGroup, "rect", {
+                        "class": "button-rect",
+                        x: boundingBox.x,
+                        y: boundingBox.y - 10,
+                        width: boundingBox.width,
+                        height: boundingBox.height + 20
+                    });
+                    pxsim.svg.title(eventSurface, pin.firstElementChild.textContent);
+                    let state = this.board;
+                    let pressedTime;
+                    for (const eventName of pxsim.pointerEvents.down) {
+                        eventSurface.addEventListener(eventName, () => {
+                            // console.log(`down ${state.edgeConnectorState.pins[i].id}`)
+                            state.edgeConnectorState.pins[index].touched = true;
+                            this.updatePin(state.edgeConnectorState.pins[index], index);
+                            this.board.bus.queue(state.edgeConnectorState.pins[index].id, 1 /* MICROBIT_BUTTON_EVT_DOWN */);
+                            pressedTime = pxsim.runtime.runningTime();
+                        });
+                    }
+                    eventSurface.addEventListener(pxsim.pointerEvents.up, () => {
+                        let state = this.board;
+                        // console.log(`up ${state.edgeConnectorState.pins[i].id}, index ${index}`)
+                        state.edgeConnectorState.pins[index].touched = false;
+                        this.updatePin(state.edgeConnectorState.pins[index], index);
+                        this.board.bus.queue(state.edgeConnectorState.pins[index].id, 2 /* MICROBIT_BUTTON_EVT_UP */);
+                        const currentTime = pxsim.runtime.runningTime();
+                        if (currentTime - pressedTime > 1000 /* DEVICE_BUTTON_LONG_CLICK_TIME */) {
+                            this.board.bus.queue(state.edgeConnectorState.pins[index].id, 4 /* MICROBIT_BUTTON_EVT_LONG_CLICK */);
+                            // console.log(`& long click`)
+                        }
+                        else {
+                            this.board.bus.queue(state.edgeConnectorState.pins[index].id, 3 /* MICROBIT_BUTTON_EVT_CLICK */);
+                            // console.log(`& click`)
+                        }
+                        pressedTime = undefined;
+                    });
+                    eventSurface.addEventListener(pxsim.pointerEvents.enter, () => {
+                        pin.classList.add("hover");
+                    });
+                    eventSurface.addEventListener(pxsim.pointerEvents.leave, () => {
+                        pin.classList.remove("hover");
+                    });
+                    eventSurface.addEventListener("focus", () => {
+                        pin.classList.add("focused");
+                    });
+                    eventSurface.addEventListener("blur", () => {
+                        pin.classList.remove("focused");
+                    });
+                    pxsim.accessibility.enableKeyboardInteraction(eventSurface, undefined, () => {
+                        let state = this.board;
+                        this.board.bus.queue(state.edgeConnectorState.pins[index].id, 1 /* MICROBIT_BUTTON_EVT_DOWN */);
+                        this.board.bus.queue(state.edgeConnectorState.pins[index].id, 2 /* MICROBIT_BUTTON_EVT_UP */);
+                        this.board.bus.queue(state.edgeConnectorState.pins[index].id, 3 /* MICROBIT_BUTTON_EVT_CLICK */);
+                    });
+                    const pinState = this.board.edgeConnectorState.pins[index];
+                    // the pin at index 4 is the logo, which doesn't support the dragging behavior
+                    if (!pinState || index === 4)
+                        continue;
+                    this.pinDragSurfaces[pinState.id] = eventSurface;
                     let pt = this.element.createSVGPoint();
                     let xpos = (index === 0 || index === 3) ? 300 : 520;
                     let vMax = 1023;
-                    pxsim.svg.buttonEvents(pin, 
+                    pxsim.svg.buttonEvents(eventSurface, 
                     // move
                     ev => {
-                        let state = this.board;
-                        let pin = state.edgeConnectorState.pins[index];
-                        let svgpin = this.pins[index];
-                        if (pin.mode & pxsim.PinFlags.Input) {
+                        if (pinState.mode & pxsim.PinFlags.Input) {
                             let cursor = pxsim.svg.cursorPoint(pt, this.element, ev);
                             let v = (xpos - cursor.y) / 70 * (vMax + 1);
-                            pin.value = Math.max(0, Math.min(vMax, Math.floor(v)));
+                            pinState.value = Math.max(0, Math.min(vMax, Math.floor(v)));
                         }
-                        this.updatePin(pin, index);
+                        this.updatePin(pinState, index);
                     }, 
                     // start
                     ev => {
-                        let state = this.board;
-                        let pin = state.edgeConnectorState.pins[index];
                         let svgpin = this.pins[index];
                         pxsim.U.addClass(svgpin, "touched");
-                        if (pin.mode & pxsim.PinFlags.Input) {
+                        if (pinState.mode & pxsim.PinFlags.Input) {
                             let cursor = pxsim.svg.cursorPoint(pt, this.element, ev);
                             let v = (xpos - cursor.y) / 70 * (vMax + 1);
-                            pin.value = Math.max(0, Math.min(vMax, Math.floor(v)));
+                            pinState.value = Math.max(0, Math.min(vMax, Math.floor(v)));
                         }
-                        this.updatePin(pin, index);
+                        this.updatePin(pinState, index);
                     }, 
                     // stop
                     (ev) => {
-                        let state = this.board;
-                        let pin = state.edgeConnectorState.pins[index];
                         let svgpin = this.pins[index];
                         pxsim.U.removeClass(svgpin, "touched");
-                        this.updatePin(pin, index);
+                        this.updatePin(pinState, index);
                         return false;
                     }, 
                     // keydown
                     (ev) => {
                         let charCode = (typeof ev.which == "number") ? ev.which : ev.keyCode;
-                        let state = this.board;
-                        let pin = state.edgeConnectorState.pins[index];
                         if (charCode === 40 || charCode === 37) { // Down/Left arrow
-                            pin.value -= 10;
-                            if (pin.value < 0) {
-                                pin.value = 1023;
+                            pinState.value -= 10;
+                            if (pinState.value < 0) {
+                                pinState.value = 1023;
                             }
-                            this.updatePin(pin, index);
+                            this.updatePin(pinState, index);
                         }
                         else if (charCode === 38 || charCode === 39) { // Up/Right arrow
-                            pin.value += 10;
-                            if (pin.value > 1023) {
-                                pin.value = 0;
+                            pinState.value += 10;
+                            if (pinState.value > 1023) {
+                                pinState.value = 0;
                             }
-                            this.updatePin(pin, index);
+                            this.updatePin(pinState, index);
                         }
                     });
-                });
-            }
-            attachPinsTouchEvents() {
-                this.pins.slice(0, 5).forEach((btn, i) => {
-                    var index = i;
-                    let state = this.board;
-                    let pressedTime;
-                    pxsim.pointerEvents.down.forEach(evid => btn.addEventListener(evid, ev => {
-                        let state = this.board;
-                        // console.log(`down ${state.edgeConnectorState.pins[i].id}`)
-                        state.edgeConnectorState.pins[i].touched = true;
-                        this.updatePin(state.edgeConnectorState.pins[i], index);
-                        this.board.bus.queue(state.edgeConnectorState.pins[i].id, 1 /* MICROBIT_BUTTON_EVT_DOWN */);
-                        pressedTime = pxsim.runtime.runningTime();
-                    }));
-                    // btn.addEventListener(pointerEvents.leave, ev => {
-                    //     let state = this.board;
-                    //     state.edgeConnectorState.pins[i].touched = false;
-                    //     this.updatePin(state.edgeConnectorState.pins[i], index);
-                    // })
-                    btn.addEventListener(pxsim.pointerEvents.up, ev => {
-                        let state = this.board;
-                        // console.log(`up ${state.edgeConnectorState.pins[i].id}, index ${index}`)
-                        state.edgeConnectorState.pins[i].touched = false;
-                        this.updatePin(state.edgeConnectorState.pins[i], index);
-                        this.board.bus.queue(state.edgeConnectorState.pins[i].id, 2 /* MICROBIT_BUTTON_EVT_UP */);
-                        const currentTime = pxsim.runtime.runningTime();
-                        if (currentTime - pressedTime > 1000 /* DEVICE_BUTTON_LONG_CLICK_TIME */) {
-                            this.board.bus.queue(state.edgeConnectorState.pins[i].id, 4 /* MICROBIT_BUTTON_EVT_LONG_CLICK */);
-                            // console.log(`& long click`)
-                        }
-                        else {
-                            this.board.bus.queue(state.edgeConnectorState.pins[i].id, 3 /* MICROBIT_BUTTON_EVT_CLICK */);
-                            // console.log(`& click`)
-                        }
-                        pressedTime = undefined;
-                    });
-                    pxsim.accessibility.enableKeyboardInteraction(btn, undefined, () => {
-                        let state = this.board;
-                        this.board.bus.queue(state.edgeConnectorState.pins[i].id, 1 /* MICROBIT_BUTTON_EVT_DOWN */);
-                        this.board.bus.queue(state.edgeConnectorState.pins[i].id, 2 /* MICROBIT_BUTTON_EVT_UP */);
-                        this.board.bus.queue(state.edgeConnectorState.pins[i].id, 3 /* MICROBIT_BUTTON_EVT_CLICK */);
-                    });
-                });
+                }
             }
             attachABEvents() {
                 const bpState = this.board.buttonPairState;
                 const stateButtons = [bpState.aBtn, bpState.bBtn];
                 const elButtonOuters = this.buttonsOuter.slice(0, 2);
                 const elButtons = this.buttons.slice(0, 2);
-                elButtonOuters.forEach((btn, index) => {
-                    let pressedTime;
-                    pxsim.pointerEvents.down.forEach(evid => btn.addEventListener(evid, ev => {
-                        // console.log(`down ${stateButtons[index].id}`)
-                        stateButtons[index].pressed = true;
-                        pxsim.svg.fill(elButtons[index], this.props.theme.buttonDown);
-                        this.board.bus.queue(stateButtons[index].id, 1 /* MICROBIT_BUTTON_EVT_DOWN */);
-                        pressedTime = pxsim.runtime.runningTime();
-                    }));
-                    btn.addEventListener(pxsim.pointerEvents.leave, ev => {
-                        stateButtons[index].pressed = false;
-                        pxsim.svg.fill(elButtons[index], this.props.theme.buttonUps[index]);
+                for (let i = 0; i < elButtonOuters.length; i++) {
+                    const outerElement = elButtonOuters[i];
+                    const innerElement = elButtons[i];
+                    const state = stateButtons[i];
+                    const boundingBox = outerElement.getBBox();
+                    const eventSurface = pxsim.svg.child(this.buttonGroup, "rect", {
+                        "class": "button-rect",
+                        x: boundingBox.x,
+                        y: boundingBox.y,
+                        width: boundingBox.width,
+                        height: boundingBox.height
                     });
-                    btn.addEventListener(pxsim.pointerEvents.up, ev => {
-                        stateButtons[index].pressed = false;
-                        pxsim.svg.fill(elButtons[index], this.props.theme.buttonUps[index]);
-                        this.board.bus.queue(stateButtons[index].id, 2 /* MICROBIT_BUTTON_EVT_UP */);
+                    pxsim.svg.title(eventSurface, innerElement.firstElementChild.textContent);
+                    let pressedTime;
+                    for (const eventName of pxsim.pointerEvents.down) {
+                        eventSurface.addEventListener(eventName, () => {
+                            state.pressed = true;
+                            pxsim.svg.fill(innerElement, this.props.theme.buttonDown);
+                            this.board.bus.queue(state.id, 1 /* MICROBIT_BUTTON_EVT_DOWN */);
+                            pressedTime = pxsim.runtime.runningTime();
+                        });
+                    }
+                    eventSurface.addEventListener(pxsim.pointerEvents.enter, () => {
+                        outerElement.classList.add("hover");
+                    });
+                    eventSurface.addEventListener(pxsim.pointerEvents.leave, () => {
+                        outerElement.classList.remove("hover");
+                    });
+                    eventSurface.addEventListener(pxsim.pointerEvents.leave, () => {
+                        state.pressed = false;
+                        pxsim.svg.fill(innerElement, this.props.theme.buttonUps[i]);
+                    });
+                    eventSurface.addEventListener(pxsim.pointerEvents.up, () => {
+                        state.pressed = false;
+                        pxsim.svg.fill(innerElement, this.props.theme.buttonUps[i]);
+                        this.board.bus.queue(state.id, 2 /* MICROBIT_BUTTON_EVT_UP */);
                         const currentTime = pxsim.runtime.runningTime();
-                        if (currentTime - pressedTime > 1000 /* DEVICE_BUTTON_LONG_CLICK_TIME */)
-                            this.board.bus.queue(stateButtons[index].id, 4 /* MICROBIT_BUTTON_EVT_LONG_CLICK */);
-                        else
-                            this.board.bus.queue(stateButtons[index].id, 3 /* MICROBIT_BUTTON_EVT_CLICK */);
+                        if (currentTime - pressedTime > 1000 /* DEVICE_BUTTON_LONG_CLICK_TIME */) {
+                            this.board.bus.queue(state.id, 4 /* MICROBIT_BUTTON_EVT_LONG_CLICK */);
+                        }
+                        else {
+                            this.board.bus.queue(state.id, 3 /* MICROBIT_BUTTON_EVT_CLICK */);
+                        }
                         pressedTime = undefined;
                     });
-                    pxsim.accessibility.enableKeyboardInteraction(btn, undefined, () => {
-                        this.board.bus.queue(stateButtons[index].id, 1 /* MICROBIT_BUTTON_EVT_DOWN */);
-                        this.board.bus.queue(stateButtons[index].id, 2 /* MICROBIT_BUTTON_EVT_UP */);
-                        this.board.bus.queue(stateButtons[index].id, 3 /* MICROBIT_BUTTON_EVT_CLICK */);
+                    pxsim.accessibility.enableKeyboardInteraction(eventSurface, undefined, () => {
+                        this.board.bus.queue(state.id, 1 /* MICROBIT_BUTTON_EVT_DOWN */);
+                        this.board.bus.queue(state.id, 2 /* MICROBIT_BUTTON_EVT_UP */);
+                        this.board.bus.queue(state.id, 3 /* MICROBIT_BUTTON_EVT_CLICK */);
                     });
-                });
+                }
             }
             attachAPlusBEvents() {
                 const bpState = this.board.buttonPairState;
