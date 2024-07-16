@@ -51,7 +51,7 @@
                     "map": {
                         "microbit": "core",
                         "microbit-bluetooth": "bluetooth",
-                        "microbit-radio": "radio",
+                        "microbit-radio": "funk",
                         "microbit-devices": "devices",
                         "microbit-led": "",
                         "microbit-music": "",
@@ -136,9 +136,9 @@
             ],
             "0.0.0 - 7.0.0": [
                 {
-                    "type": "missingPackage",
+                    "type": "package",
                     "map": {
-                        "radio\\s*\\.": "funk"
+                        "radio": "funk"
                     }
                 }
             ]
@@ -447,8 +447,8 @@
     "uploadDocs": true,
     "versions": {
         "branch": "main",
-        "commits": "https://github.com/liudonghua123/pxt-calliope-app/commits/50e51b63949c99f98c43791368bef7f8dd3f444f",
-        "target": "6.0.40",
+        "commits": "https://github.com/liudonghua123/pxt-calliope-app/commits/820a21946379eb10c100e506f200d05c16ad8139",
+        "target": "6.0.41",
         "pxt": "9.0.18"
     },
     "blocksprj": {
