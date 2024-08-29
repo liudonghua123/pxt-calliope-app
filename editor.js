@@ -3174,10 +3174,9 @@ exports.cantImportAsync = cantImportAsync;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference path="../node_modules/pxt-core/localtypings/pxtarget.d.ts" />
-/// <reference path="../node_modules/pxt-core/built/pxtblocks.d.ts" />
 /// <reference path="../node_modules/pxt-core/built/pxtcompiler.d.ts" />
 /// <reference path="../node_modules/pxt-core/built/pxtlib.d.ts" />
-/// <reference path="../node_modules/pxt-core/built/pxteditor.d.ts" />
+/// <reference path="../node_modules/pxt-core/localtypings/pxteditor.d.ts" />
 /// <reference path="dapjs.d.ts" />
 // import * as dialogs from "./dialogs";
 const flash = require("./flash");
@@ -3462,7 +3461,7 @@ class DAPWrapper {
         if (this.usesCODAL === undefined)
             console.warn('try to access codal information before it is computed');
         if (!this.usesCODAL) {
-            return ["logotouch", "builtinspeaker", "microphone", "flashlog"];
+            return ["logotouch", "flashlog"];
         }
         return [];
     }
@@ -3510,12 +3509,11 @@ class DAPWrapper {
         const connectionId = this.connectionId;
         this.allocDAP(); // clean dap apis
         await this.io.reconnectAsync();
+        await this.clearCommandsAsync();
         // halt before reading from dap
         // to avoid interference from data logger
         await this.cortexM.halt();
-        // before calling into dapjs, we use our dapCmdNums() a few times, which which will make sure the responses
-        // to commends from previous sessions (if any) are flushed
-        const info = await this.dapCmdNums(0x00, 0x04); // info
+        const info = await this.getDaplinkVersionAsync(); // info
         const daplinkVersion = stringResponse(info);
         log(`daplink version: ${daplinkVersion}`);
         const r = await this.dapCmdNums(0x80);
@@ -3540,12 +3538,25 @@ class DAPWrapper {
         // start jacdac, serial async
         this.startReadSerial(connectionId);
     }
+    async clearCommandsAsync() {
+        // before calling into dapjs, push through a few commands to make sure the responses
+        // to commands from previous sessions (if any) are flushed. Count of 5 is arbitrary.
+        for (let i = 0; i < 5; i++) {
+            try {
+                await this.getDaplinkVersionAsync();
+            }
+            catch (e) { }
+        }
+    }
+    async getDaplinkVersionAsync() {
+        return await this.dapCmdNums(0x00, 0x04);
+    }
     async checkStateAsync(resume) {
         const states = ["reset", "lockup", "sleeping", "halted", "running"];
         try {
             const state = await this.cortexM.getState();
             log(`cortex state: ${states[state]}`);
-            if (resume && state == 3 /* TARGET_HALTED */)
+            if (resume && state == 3 /* DapJS.CoreState.TARGET_HALTED */)
                 await this.cortexM.resume();
         }
         catch (e) {
@@ -3577,6 +3588,7 @@ class DAPWrapper {
         if (!this.io.isConnected()) {
             await this.io.reconnectAsync();
         }
+        await this.clearCommandsAsync();
         await this.stopReadersAsync();
         await this.cortexM.init();
         await this.cortexM.reset(true);
@@ -3750,9 +3762,9 @@ class DAPWrapper {
         const runFlash = async (b, dataAddr) => {
             const cmd = this.cortexM.prepareCommand();
             cmd.halt();
-            cmd.writeCoreRegister(15 /* PC */, loadAddr + 4 + 1);
-            cmd.writeCoreRegister(14 /* LR */, loadAddr + 1);
-            cmd.writeCoreRegister(13 /* SP */, stackAddr);
+            cmd.writeCoreRegister(15 /* DapJS.CortexReg.PC */, loadAddr + 4 + 1);
+            cmd.writeCoreRegister(14 /* DapJS.CortexReg.LR */, loadAddr + 1);
+            cmd.writeCoreRegister(13 /* DapJS.CortexReg.SP */, stackAddr);
             cmd.writeCoreRegister(0, b.targetAddr);
             cmd.writeCoreRegister(1, dataAddr);
             cmd.writeCoreRegister(2, this.pageSize >> 2);
@@ -3938,7 +3950,7 @@ class DAPWrapper {
                 return;
             const info = await this.readBytes(xchg, 16);
             if (info[12 + 2] != 0xff) {
-                log("jacdac: invalid memory; try power-cycling the micro:bit");
+                log("jacdac: invalid memory; try power-cycling the Calliope mini");
                 pxt.tickEvent("hid.flash.jacdac.error.invalidmemory");
                 console.debug({ info, xchg });
                 return;
@@ -4033,7 +4045,95 @@ exports.mkDAPLinkPacketIOWrapper = mkDAPLinkPacketIOWrapper;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.patchBlocks = void 0;
 function patchBlocks(pkgTargetVersion, dom) {
-    // is this a old script?
+    if (pxt.semver.majorCmp(pkgTargetVersion || "0.0.0", "7.0.0") <= 0) {
+        // Variable pin param
+        /*
+        <block type="device_get_digital_pin">
+            <field name="name">DigitalPin.P0</field>
+        </block>
+
+        converts to
+
+        <block type="device_get_digital_pin">
+            <value name="name">
+                <shadow type="digital_pin">
+                    <field name="pin">DigitalPin.P0</field>
+                </shadow>
+            </value>
+        </block>
+        */
+        pxt.U.toArray(dom.querySelectorAll("block[type=device_get_digital_pin]"))
+            .concat(pxt.U.toArray(dom.querySelectorAll("shadow[type=device_get_digital_pin]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_digital_pin]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_get_analog_pin]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("shadow[type=device_get_analog_pin]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_analog_pin]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_analog_period]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=pins_on_pulsed]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=pins_pulse_in]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("shadow[type=pins_pulse_in]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_servo_pin]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_servo_pulse]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_analog_set_pitch_pin]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_pull]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_pin_events]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=pin_neopixel_matrix_width]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=spi_pins]")))
+            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=pin_set_audio_pin]")))
+            .forEach(node => {
+            const blockType = node.getAttribute("type");
+            pxt.U.toArray(node.children)
+                .filter(oldPinNode => {
+                if (oldPinNode.tagName != "field")
+                    return false;
+                switch (blockType) {
+                    case "device_get_digital_pin":
+                    case "device_set_digital_pin":
+                    case "device_get_analog_pin":
+                    case "device_set_analog_pin":
+                    case "pins_pulse_in":
+                    case "device_set_servo_pin":
+                    case "device_analog_set_pitch_pin":
+                    case "pin_set_audio_pin":
+                        return oldPinNode.getAttribute("name") === "name";
+                    case "device_set_analog_period":
+                    case "pins_on_pulsed":
+                    case "device_set_pull":
+                    case "device_set_pin_events":
+                    case "pin_neopixel_matrix_width":
+                        return oldPinNode.getAttribute("name") === "pin";
+                    case "device_set_servo_pulse":
+                        return oldPinNode.getAttribute("name") === "value";
+                    case "spi_pins":
+                        return ["mosi", "miso", "sck"].includes(oldPinNode.getAttribute("name"));
+                }
+                return false;
+            })
+                .forEach(oldPinNode => {
+                const valueNode = node.ownerDocument.createElement("value");
+                valueNode.setAttribute("name", oldPinNode.getAttribute("name"));
+                const pinShadowNode = node.ownerDocument.createElement("shadow");
+                let pinBlockType;
+                switch (oldPinNode.textContent.split(".")[0]) {
+                    case "DigitalPin":
+                        pinBlockType = "digital_pin_shadow";
+                        break;
+                    case "AnalogPin":
+                        pinBlockType = "analog_pin_shadow";
+                        break;
+                }
+                if (!pinBlockType)
+                    return;
+                pinShadowNode.setAttribute("type", pinBlockType);
+                const fieldNode = node.ownerDocument.createElement("field");
+                fieldNode.setAttribute("name", "pin");
+                fieldNode.textContent = oldPinNode.textContent;
+                pinShadowNode.appendChild(fieldNode);
+                valueNode.appendChild(pinShadowNode);
+                node.replaceChild(valueNode, oldPinNode);
+            });
+        });
+    }
     if (pxt.semver.majorCmp(pkgTargetVersion || "0.0.0", "5.0.0") >= 0)
         return;
     // Motor Names mapping
@@ -4058,7 +4158,6 @@ function patchBlocks(pkgTargetVersion, dom) {
         .forEach(node => {
         node.setAttribute('type', 'soundLevel');
     });
-    // is this a old script?
     if (pxt.semver.majorCmp(pkgTargetVersion || "0.0.0", "4.0.20") >= 0)
         return;
     // button and pin pressed/released blocks
@@ -4072,9 +4171,9 @@ function patchBlocks(pkgTargetVersion, dom) {
         <block type="device_pin_released" x="361" y="158">
             <field name="NAME">TouchPin.P1</field>
         </block>
-    
+
         converts to
-    
+
         <block type="device_button_selected_event" x="35" y="429">
             <field name="NAME">Button.B</field>
             <value name="eventType">
@@ -4195,48 +4294,6 @@ function patchBlocks(pkgTargetVersion, dom) {
         const arrowNode = node.querySelectorAll("field[name=i]")[0];
         arrowNode.textContent = "IconNames.Arrow" + arrowNode.textContent.split('.')[1];
     });
-    // LEDs
-    /**
-     *       <block type="device_show_leds">
-        <field name="LED00">FALSE</field>
-        <field name="LED10">FALSE</field>
-        <field name="LED20">FALSE</field>
-        <field name="LED30">FALSE</field>
-        <field name="LED40">FALSE</field>
-        <field name="LED01">FALSE</field>
-        <field name="LED11">FALSE</field>
-        <field name="LED21">FALSE</field>
-        <field name="LED31">TRUE</field>
-        <field name="LED41">FALSE</field>
-        <field name="LED02">FALSE</field>
-        <field name="LED12">FALSE</field>
-        <field name="LED22">FALSE</field>
-        <field name="LED32">FALSE</field>
-        <field name="LED42">FALSE</field>
-        <field name="LED03">FALSE</field>
-        <field name="LED13">TRUE</field>
-        <field name="LED23">FALSE</field>
-        <field name="LED33">FALSE</field>
-        <field name="LED43">FALSE</field>
-        <field name="LED04">FALSE</field>
-        <field name="LED14">FALSE</field>
-        <field name="LED24">FALSE</field>
-        <field name="LED34">FALSE</field>
-        <field name="LED44">FALSE</field>
-      </block>
-    
-      to
-    <block type="device_show_leds">
-        <field name="LEDS">`
-        # # # # #
-        . . . . #
-        . . . . .
-        . . . . #
-        . . . . #
-        `
-        </field>
-      </block>
-     */
     if (pxt.semver.majorCmp(pkgTargetVersion || "0.0.0", "5.0.12") <= 0) {
         // Eighth note misspelling
         /*
@@ -4272,6 +4329,48 @@ function patchBlocks(pkgTargetVersion, dom) {
     if (pxt.semver.majorCmp(pkgTargetVersion || "0.0.0", "1.0.0") >= 0)
         return;
     // showleds
+    /**
+    <block type="device_show_leds">
+        <field name="LED00">FALSE</field>
+        <field name="LED10">FALSE</field>
+        <field name="LED20">FALSE</field>
+        <field name="LED30">FALSE</field>
+        <field name="LED40">FALSE</field>
+        <field name="LED01">FALSE</field>
+        <field name="LED11">FALSE</field>
+        <field name="LED21">FALSE</field>
+        <field name="LED31">TRUE</field>
+        <field name="LED41">FALSE</field>
+        <field name="LED02">FALSE</field>
+        <field name="LED12">FALSE</field>
+        <field name="LED22">FALSE</field>
+        <field name="LED32">FALSE</field>
+        <field name="LED42">FALSE</field>
+        <field name="LED03">FALSE</field>
+        <field name="LED13">TRUE</field>
+        <field name="LED23">FALSE</field>
+        <field name="LED33">FALSE</field>
+        <field name="LED43">FALSE</field>
+        <field name="LED04">FALSE</field>
+        <field name="LED14">FALSE</field>
+        <field name="LED24">FALSE</field>
+        <field name="LED34">FALSE</field>
+        <field name="LED44">FALSE</field>
+    </block>
+
+    converts to
+
+    <block type="device_show_leds">
+        <field name="LEDS">`
+            . . . . .
+            . . . # .
+            . . . . .
+            . # . . .
+            . . . . .
+            `
+        </field>
+    </block>
+    */
     const nodes = pxt.U.toArray(dom.querySelectorAll("block[type=device_show_leds]"))
         .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_build_image]")))
         .concat(pxt.U.toArray(dom.querySelectorAll("shadow[type=device_build_image]")))
@@ -4302,33 +4401,33 @@ function patchBlocks(pkgTargetVersion, dom) {
     });
     // radio
     /*
-<block type="radio_on_packet" x="174" y="120">
-<mutation callbackproperties="receivedNumber" renamemap="{}"></mutation>
-<field name="receivedNumber">receivedNumber</field>
-</block>
-<block type="radio_on_packet" disabled="true" x="127" y="263">
-<mutation callbackproperties="receivedString,receivedNumber" renamemap="{&quot;receivedString&quot;:&quot;name&quot;,&quot;receivedNumber&quot;:&quot;value&quot;}"></mutation>
-<field name="receivedString">name</field>
-<field name="receivedNumber">value</field>
-</block>
-<block type="radio_on_packet" disabled="true" x="162" y="420">
-<mutation callbackproperties="receivedString" renamemap="{}"></mutation>
-<field name="receivedString">receivedString</field>
-</block>
+    <block type="radio_on_packet" x="174" y="120">
+        <mutation callbackproperties="receivedNumber" renamemap="{}"></mutation>
+        <field name="receivedNumber">receivedNumber</field>
+    </block>
+    <block type="radio_on_packet" disabled="true" x="127" y="263">
+        <mutation callbackproperties="receivedString,receivedNumber" renamemap="{&quot;receivedString&quot;:&quot;name&quot;,&quot;receivedNumber&quot;:&quot;value&quot;}"></mutation>
+        <field name="receivedString">name</field>
+        <field name="receivedNumber">value</field>
+    </block>
+    <block type="radio_on_packet" disabled="true" x="162" y="420">
+        <mutation callbackproperties="receivedString" renamemap="{}"></mutation>
+        <field name="receivedString">receivedString</field>
+    </block>
 
-converts to
+    converts to
 
-<block type="radio_on_number" x="196" y="208">
-<field name="HANDLER_receivedNumber" id="DCy(W;1)*jLWQUpoy4Mm" variabletype="">receivedNumber</field>
-</block>
-<block type="radio_on_value" x="134" y="408">
-<field name="HANDLER_name" id="*d-Jm^MJXO]Djs(dTR*?" variabletype="">name</field>
-<field name="HANDLER_value" id="A6HQjH[k^X43o3h775+G" variabletype="">value</field>
-</block>
-<block type="radio_on_string" x="165" y="583">
-<field name="HANDLER_receivedString" id="V9KsE!h$(iO?%W:[32CV" variabletype="">receivedString</field>
-</block>
-*/
+    <block type="radio_on_number" x="196" y="208">
+        <field name="HANDLER_receivedNumber" id="DCy(W;1)*jLWQUpoy4Mm" variabletype="">receivedNumber</field>
+    </block>
+    <block type="radio_on_value" x="134" y="408">
+        <field name="HANDLER_name" id="*d-Jm^MJXO]Djs(dTR*?" variabletype="">name</field>
+        <field name="HANDLER_value" id="A6HQjH[k^X43o3h775+G" variabletype="">value</field>
+    </block>
+    <block type="radio_on_string" x="165" y="583">
+        <field name="HANDLER_receivedString" id="V9KsE!h$(iO?%W:[32CV" variabletype="">receivedString</field>
+    </block>
+    */
     const varids = {};
     function addField(node, renameMap, name) {
         const f = node.ownerDocument.createElement("field");

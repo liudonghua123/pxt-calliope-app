@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head>
@@ -77,36 +77,28 @@
 
 	
 <!-- include tocheader.html -->
-<div id="top-bar" class="ui fixed accent borderless inverted main menu hideprint docs" role="menubar">
-    <div>
+<div class="docs-top-bar inverted" role="banner">
+    <div id="top-bar" class="menu-bar" role="menubar">
         
             <a id="togglesidebar" class="launch icon item" tabindex="0" title="Side menu" aria-label="Side menu" role="menuitem" aria-expanded="false">
                 <i class="content icon"></i>
             </a>
         
-        <div class="item" role="menuitem">
-            <div class="header-org-logo">
-                <img src="/static/logo/Microsoft_logo_rgb_W-white_D.png" alt="Microsoft">
-            </div>
-            <div class="header-org-logo-sm">
-                <img src="/static/logo/Microsoft_logo_rgb_W-white_D-square.png" alt="Microsoft">
-            </div>
-            <div class="header-title"><span>MakeCode</span></div>
+        <div class="logo-group" role="menuitem">
+            <img class="desktop-only" src="/static/logo/Microsoft_logo_rgb_W-white_D.png" alt="Microsoft">
+            <img class="desktop-hidden" src="/static/logo/Microsoft_logo_rgb_W-white_D-square.png" alt="Microsoft">
+            <div class="header-title desktop-only"><span>MakeCode</span></div>
         </div>
     </div>
-    <div>
-        <div class="item">
-            <form id="tocsearch1" class="search" role="form" method="get" action="https://www.bing.com/search">
-                <div class="ui fluid icon input">
-                    <input type="hidden" name="q1" value="site:https://makecode.calliope.cc/" />
-                    
+    <form id="tocsearch1" class="search" method="get" action="https://www.bing.com/search" role="search">
+        <div class="ui fluid icon input">
+            <input type="hidden" name="q1" value="site:https://makecode.calliope.cc/" />
+            
                 <input type="search" name="q" placeholder="Search..." aria-label="Search Documentation">
                 <i onclick="document.getElementById('tocsearch1').submit();" tabindex="0" class="search link icon" aria-label="Search" role="button"></i>
             
-                </div>
-            </form>
         </div>
-    </div>
+    </form>
 </div>
 
 <div id="side-menu" class="ui vertical accent inverted sidebar menu left hideprint docs" role="menubar">
@@ -324,6 +316,9 @@
 
     <a class="item " href="/pxt-calliope-app/docs/save.html" role="menuitem">Save</a>
 
+
+    <a class="item " href="/pxt-calliope-app/docs/homepage-content.html" role="menuitem">Home page content</a>
+
         </div>
     </div>
 
@@ -366,7 +361,7 @@
 <!-- end include header.html -->
 
 
-				<div class="main ui container fluid mainbody">
+				<div class="main ui container fluid mainbody" role="main">
 					<button id="printbtn" class="circular ui icon right floated button hideprint hidemobile"
 						title="Print" aria-label="Print">
 						<i class="icon print"></i>
@@ -378,15 +373,15 @@
 <p>Data values that are written to the data log are assigned to a <em>column</em> in order to identify what their value is related to. Before logging a data value, it is formatted as a “CV” or “column-value” data item. A column name is attached to a data value this way.</p>
 <p>A data log entry is written to the data log as an array of one or more “column-value” data item objects. This function creates the data item for the value you want to include in a log entry.</p>
 <h2 id="parameters">Parameters</h2><ul>
-<li><strong>colunm</strong>: a <a target="_blank" rel="nofollow noopener" href="types/string">string</a> name that idenifies the data value.</li>
-<li><strong>value</strong>: a data value of <em>any</em> type that is logged with the <code>colunm</code> name.</li>
+<li><strong>column</strong>: a <a target="_blank" rel="nofollow noopener" href="types/string">string</a> name that identifies the data value.</li>
+<li><strong>value</strong>: a data value of <em>any</em> type that is logged with the <code>column</code> name.</li>
 </ul>
 <h2 id="example">Example</h2><h3 id="button-states">Button states</h3><p>Record the state of the buttons on the Calliope mini every 500 milliseconds.</p>
 <pre><code class="lang-blocks">loops.everyInterval(500, function () {
     datalogger.logData([datalogger.createCV(&quot;Button A&quot;, input.buttonIsPressed(Button.A)), datalogger.createCV(&quot;Button B&quot;, input.buttonIsPressed(Button.B))])
 })</code></pre>
-<h3 id="mood-experiment">Mood experiment</h3><p>Create an experiment to record a person’s moods and relate them to current enviromental factors. Set 3 button options for moods of “happy”, “sad”, and “angry”. When the user signals their mood by pressing a button, read the current temperature, light level, and sound level to establish a relationship between those factors and mood.</p>
-<pre><code class="lang-blocks">input.onButtonPressed(Button.A, function () {
+<h3 id="mood-experiment">Mood experiment</h3><p>Create an experiment to record a person’s moods and relate them to current environmental factors. Set 3 button options for moods of “happy”, “sad”, and “angry”. When the user signals their mood by pressing a button, read the current temperature, light level, and sound level to establish a relationship between those factors and mood.</p>
+<pre><code class="lang-blocks">input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     logMood(&quot;happy&quot;)
 })
 function logMood (mood: string) {
@@ -396,10 +391,10 @@ function logMood (mood: string) {
     columns[3] = datalogger.createCV(&quot;temperature&quot;, input.temperature())
     datalogger.logData(columns)
 }
-input.onButtonPressed(Button.AB, function () {
+input.onButtonEvent(Button.AB, input.buttonEventClick(), function () {
     logMood(&quot;angry&quot;)
 })
-input.onButtonPressed(Button.B, function () {
+input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     logMood(&quot;sad&quot;)
 })
 let columns: datalogger.ColumnValue[] = []
@@ -607,10 +602,10 @@ datalogger.createCV(&quot;&quot;, 0)
                     if (typeof Windows !== "undefined")
                         telemetryItem.properties["WindowsApp"] = 1;
                     var userAgent = navigator.userAgent.toLowerCase();
-                    var userAgentRegexResult = /\belectron\/(\d+\.\d+\.\d+.*?)(?: |$)/i.exec(userAgent); // Example navigator.userAgent: "Mozilla/5.0 Chrome/61.0.3163.100 Electron/2.0.0 Safari/537.36"
-                    if (userAgentRegexResult) {
+                    var electronRegexResult = /\belectron\/(\d+\.\d+\.\d+.*?)(?: |$)/i.exec(userAgent); // Example navigator.userAgent: "Mozilla/5.0 Chrome/61.0.3163.100 Electron/2.0.0 Safari/537.36"
+                    if (electronRegexResult) {
                         telemetryItem.properties["Electron"] = 1;
-                        telemetryItem.properties["ElectronVersion"] = userAgentRegexResult[1];
+                        telemetryItem.properties["ElectronVersion"] = electronRegexResult[1];
                     }
                     if (typeof pxtElectron !== "undefined") {
                         telemetryItem.properties["PxtElectron"] = 1;
@@ -622,6 +617,13 @@ datalogger.createCV(&quot;&quot;, 0)
                         telemetryItem.properties["PxtTargetVersion"] = pxtElectron.versions.pxtTargetVersion;
                         telemetryItem.properties["PxtElectronIsProd"] = pxtElectron.versions.isProd;
                     }
+                    // Kiosk UWP info is appended to the user agent by the makecode-dotnet-apps/arcade-kiosk UWP app
+                    var kioskUwpRegexResult = /\((MakeCode Arcade Kiosk UWP)\/([\S]+)\/([\S]+)\)/i.exec(userAgent); // Example navigator.userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.60 (MakeCode Arcade Kiosk UWP/0.1.41.0/Windows.Xbox)"
+                    if (kioskUwpRegexResult) {
+                        telemetryItem.properties["KioskUwp"] = 1;
+                        telemetryItem.properties["KioskUwpVersion"] = kioskUwpRegexResult[2];
+                        telemetryItem.properties["KioskUwpPlatform"] = kioskUwpRegexResult[3];
+                    }
                     return true;
                 });
             },
@@ -630,6 +632,7 @@ datalogger.createCV(&quot;&quot;, 0)
                 disableAjaxTracking: true,
                 overridePageViewDuration: false,
                 disableExceptionTracking: true,
+                disableCorrelationHeaders: true,
                 disableCookiesUsage: !isProduction,
                 isStorageUseDisabled: !isProduction,
                 url: "/pxt-calliope-app/ai.2.min.js"

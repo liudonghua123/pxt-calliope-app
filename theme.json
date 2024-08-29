@@ -145,6 +145,7 @@
         "sv-SE",
         "tr",
         "uk",
+        "vi",
         "zh-CN",
         "zh-TW"
     ],
@@ -152,7 +153,8 @@
         "editor.background": "#ecf0f1"
     },
     "monacoFieldEditors": [
-        "soundeffect-editor"
+        "soundeffect-editor",
+        "image-editor"
     ],
     "browserDbPrefixes": {
         "1": "v1",
@@ -160,7 +162,8 @@
         "3": "v3",
         "4": "v4",
         "5": "v5",
-        "6": "v6"
+        "6": "v6",
+        "7": "v7"
     },
     "editorVersionPaths": {
         "0": "v0"
@@ -219,6 +222,9 @@
     "matchWebUSBDeviceInSim": true,
     "condenseProfile": true,
     "cloudProfileIcon": "docs/static/profile/microbit-cloud.png",
+    "timeMachine": true,
+    "timeMachineDiffInterval": 600000,
+    "timeMachineSnapshotInterval": 1800000,
     "TOC": [
         {
             "name": "About",
@@ -489,6 +495,11 @@
                 {
                     "name": "Save",
                     "path": "/save",
+                    "subitems": []
+                },
+                {
+                    "name": "Home page content",
+                    "path": "/homepage-content",
                     "subitems": []
                 }
             ]

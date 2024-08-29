@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head>
@@ -77,36 +77,28 @@
 
 	
 <!-- include tocheader.html -->
-<div id="top-bar" class="ui fixed accent borderless inverted main menu hideprint docs" role="menubar">
-    <div>
+<div class="docs-top-bar inverted" role="banner">
+    <div id="top-bar" class="menu-bar" role="menubar">
         
             <a id="togglesidebar" class="launch icon item" tabindex="0" title="Side menu" aria-label="Side menu" role="menuitem" aria-expanded="false">
                 <i class="content icon"></i>
             </a>
         
-        <div class="item" role="menuitem">
-            <div class="header-org-logo">
-                <img src="/static/logo/Microsoft_logo_rgb_W-white_D.png" alt="Microsoft">
-            </div>
-            <div class="header-org-logo-sm">
-                <img src="/static/logo/Microsoft_logo_rgb_W-white_D-square.png" alt="Microsoft">
-            </div>
-            <div class="header-title"><span>MakeCode</span></div>
+        <div class="logo-group" role="menuitem">
+            <img class="desktop-only" src="/static/logo/Microsoft_logo_rgb_W-white_D.png" alt="Microsoft">
+            <img class="desktop-hidden" src="/static/logo/Microsoft_logo_rgb_W-white_D-square.png" alt="Microsoft">
+            <div class="header-title desktop-only"><span>MakeCode</span></div>
         </div>
     </div>
-    <div>
-        <div class="item">
-            <form id="tocsearch1" class="search" role="form" method="get" action="https://www.bing.com/search">
-                <div class="ui fluid icon input">
-                    <input type="hidden" name="q1" value="site:https://makecode.calliope.cc/" />
-                    
+    <form id="tocsearch1" class="search" method="get" action="https://www.bing.com/search" role="search">
+        <div class="ui fluid icon input">
+            <input type="hidden" name="q1" value="site:https://makecode.calliope.cc/" />
+            
                 <input type="search" name="q" placeholder="Search..." aria-label="Search Documentation">
                 <i onclick="document.getElementById('tocsearch1').submit();" tabindex="0" class="search link icon" aria-label="Search" role="button"></i>
             
-                </div>
-            </form>
         </div>
-    </div>
+    </form>
 </div>
 
 <div id="side-menu" class="ui vertical accent inverted sidebar menu left hideprint docs" role="menubar">
@@ -324,6 +316,9 @@
 
     <a class="item " href="/pxt-calliope-app/docs/save.html" role="menuitem">Save</a>
 
+
+    <a class="item " href="/pxt-calliope-app/docs/homepage-content.html" role="menuitem">Home page content</a>
+
         </div>
     </div>
 
@@ -366,7 +361,7 @@
 <!-- end include header.html -->
 
 
-				<div class="main ui container fluid mainbody">
+				<div class="main ui container fluid mainbody" role="main">
 					<button id="printbtn" class="circular ui icon right floated button hideprint hidemobile"
 						title="Print" aria-label="Print">
 						<i class="icon print"></i>
@@ -379,7 +374,7 @@
 
     <div class="ui info message">
         <div class="content">
-            <p><strong>Simulator</strong>: This function needs real hardware to work with. It’s not supported in the simulator.</p>
+            <h4 id="simulator">Simulator</h4><p>This function needs real hardware to work with. It’s not supported in the simulator.</p>
 
         </div>
     </div>
@@ -592,10 +587,10 @@ serial.writeLine(&quot;WHOAMI register value: &quot; + whoami)</code></pre>
                     if (typeof Windows !== "undefined")
                         telemetryItem.properties["WindowsApp"] = 1;
                     var userAgent = navigator.userAgent.toLowerCase();
-                    var userAgentRegexResult = /\belectron\/(\d+\.\d+\.\d+.*?)(?: |$)/i.exec(userAgent); // Example navigator.userAgent: "Mozilla/5.0 Chrome/61.0.3163.100 Electron/2.0.0 Safari/537.36"
-                    if (userAgentRegexResult) {
+                    var electronRegexResult = /\belectron\/(\d+\.\d+\.\d+.*?)(?: |$)/i.exec(userAgent); // Example navigator.userAgent: "Mozilla/5.0 Chrome/61.0.3163.100 Electron/2.0.0 Safari/537.36"
+                    if (electronRegexResult) {
                         telemetryItem.properties["Electron"] = 1;
-                        telemetryItem.properties["ElectronVersion"] = userAgentRegexResult[1];
+                        telemetryItem.properties["ElectronVersion"] = electronRegexResult[1];
                     }
                     if (typeof pxtElectron !== "undefined") {
                         telemetryItem.properties["PxtElectron"] = 1;
@@ -607,6 +602,13 @@ serial.writeLine(&quot;WHOAMI register value: &quot; + whoami)</code></pre>
                         telemetryItem.properties["PxtTargetVersion"] = pxtElectron.versions.pxtTargetVersion;
                         telemetryItem.properties["PxtElectronIsProd"] = pxtElectron.versions.isProd;
                     }
+                    // Kiosk UWP info is appended to the user agent by the makecode-dotnet-apps/arcade-kiosk UWP app
+                    var kioskUwpRegexResult = /\((MakeCode Arcade Kiosk UWP)\/([\S]+)\/([\S]+)\)/i.exec(userAgent); // Example navigator.userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.60 (MakeCode Arcade Kiosk UWP/0.1.41.0/Windows.Xbox)"
+                    if (kioskUwpRegexResult) {
+                        telemetryItem.properties["KioskUwp"] = 1;
+                        telemetryItem.properties["KioskUwpVersion"] = kioskUwpRegexResult[2];
+                        telemetryItem.properties["KioskUwpPlatform"] = kioskUwpRegexResult[3];
+                    }
                     return true;
                 });
             },
@@ -615,6 +617,7 @@ serial.writeLine(&quot;WHOAMI register value: &quot; + whoami)</code></pre>
                 disableAjaxTracking: true,
                 overridePageViewDuration: false,
                 disableExceptionTracking: true,
+                disableCorrelationHeaders: true,
                 disableCookiesUsage: !isProduction,
                 isStorageUseDisabled: !isProduction,
                 url: "/pxt-calliope-app/ai.2.min.js"

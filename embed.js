@@ -10,7 +10,7 @@
     "gifworkerjs": "/pxt-calliope-app/gifjs/gif.worker.js",
     "serviceworkerjs": "/pxt-calliope-app/serviceworker.js",
     "typeScriptWorkerJs": "/pxt-calliope-app/tsworker.js",
-    "pxtVersion": "9.0.18",
+    "pxtVersion": "10.2.16",
     "pxtRelId": "localDirRelId",
     "pxtCdnUrl": "/pxt-calliope-app/",
     "commitCdnUrl": "/pxt-calliope-app/",
@@ -28,10 +28,13 @@
     "docsUrl": "/pxt-calliope-app/docs.html",
     "multiUrl": "/pxt-calliope-app/multi.html",
     "asseteditorUrl": "/pxt-calliope-app/asseteditor.html",
+    "isStatic": true,
+    "kioskUrl": "/pxt-calliope-app/kiosk.html",
+    "teachertoolUrl": "/pxt-calliope-app/teachertool.html",
+    "tutorialtoolUrl": "/pxt-calliope-app/tutorialtool.html",
     "skillmapUrl": "/pxt-calliope-app/skillmap.html",
-    "authcodeUrl": "/pxt-calliope-app/authcode.html",
     "multiplayerUrl": "/pxt-calliope-app/multiplayer.html",
-    "isStatic": true
+    "authcodeUrl": "/pxt-calliope-app/authcode.html"
 };
 
     var scripts = [
@@ -57,7 +60,7 @@
     window.ksRunnerWhenLoaded = function() {
         pxt.docs.requireHighlightJs = function() { return hljs; }
         pxt.setupWebConfig(pxtConfig || window.pxtWebConfig)
-        pxt.runner.initCallbacks = pxtCallbacks
+        pxt.runner.setInitCallbacks(pxtCallbacks)
         pxtCallbacks.push(function() {
             pxtCallbacks = null
         })

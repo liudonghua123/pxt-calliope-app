@@ -11,7 +11,6 @@ CACHE:
 /pxt-calliope-app/pxtlib.js
 /pxt-calliope-app/pxtcompiler.js
 /pxt-calliope-app/pxtpy.js
-/pxt-calliope-app/pxtblockly.js
 /pxt-calliope-app/pxteditor.js
 /pxt-calliope-app/pxtsim.js
 /pxt-calliope-app/pxtembed.js
@@ -60,7 +59,7 @@ CACHE:
 /pxt-calliope-app/worker.js
 /pxt-calliope-app/monacoworker.js
 
-# ver Tue Jul 16 2024 23:25:01 GMT+0000 (Coordinated Universal Time)
+# ver Thu Aug 29 2024 00:02:12 GMT+0000 (Coordinated Universal Time)
 
 # target
 /pxt-calliope-app/docs/static/providers/github-mark.png

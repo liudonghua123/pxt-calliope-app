@@ -194,7 +194,7 @@
                 "codalTarget": {
                     "name": "codal-microbit-v2",
                     "url": "https://github.com/calliope-edu/codal-microbit-v2",
-                    "branch": "v0.2.63-calliope-rc1",
+                    "branch": "v0.2.67-calliope-rc1",
                     "type": "git"
                 },
                 "codalBinary": "MICROBIT",
@@ -378,7 +378,7 @@
             "graphBackground": "#d9d9d9",
             "lineColors": [
                 "#6633cc",
-                "#3891A6",
+                "#2C7485",
                 "#3454D1",
                 "#EF767A",
                 "#F46197",
@@ -441,15 +441,21 @@
             "appTheme": {
                 "hideReplaceMyCode": false
             }
+        },
+        "teachertool=1": {
+            "appTheme": {
+                "hideMenuBar": true,
+                "workspaceSearch": true
+            }
         }
     },
     "ignoreDocsErrors": true,
     "uploadDocs": true,
     "versions": {
         "branch": "main",
-        "commits": "https://github.com/liudonghua123/pxt-calliope-app/commits/820a21946379eb10c100e506f200d05c16ad8139",
-        "target": "6.0.41",
-        "pxt": "9.0.18"
+        "commits": "https://github.com/liudonghua123/pxt-calliope-app/commits/05a869f16f98712891ccb62d524403aeeda59ced",
+        "target": "7.0.1",
+        "pxt": "10.2.16"
     },
     "blocksprj": {
         "id": "blocksprj",

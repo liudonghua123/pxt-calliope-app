@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head>
@@ -22,14 +22,14 @@
 <meta name="twitter:site" content="@msmakecode" />
 <meta name="twitter:title" content="Microsoft MakeCode for Calliope mini" />
 <meta name="twitter:description" content="A Blocks / JavaScript code editor for the Calliope mini powered by Microsoft MakeCode." />
-<meta name="twitter:image" content="docs/static/icons/apple-touch-icon.png" />
+<meta name="twitter:image" content="/static/extensions/toolbox-category.png" />
 
 <meta property="og:title" content="Microsoft MakeCode for Calliope mini" />
 <meta property="og:site_name" content="Microsoft MakeCode" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="A Blocks / JavaScript code editor for the Calliope mini powered by Microsoft MakeCode." />
 <meta property="fb:app_id" content="" />
-<meta property="og:image" content="docs/static/icons/apple-touch-icon.png" />
+<meta property="og:image" content="/static/extensions/toolbox-category.png" />
 
 <meta name="format-detection" content="telephone=no">
 <link rel="apple-touch-icon" href="docs/static/icons/apple-touch-icon.png">
@@ -77,36 +77,28 @@
 
 	
 <!-- include tocheader.html -->
-<div id="top-bar" class="ui fixed accent borderless inverted main menu hideprint docs" role="menubar">
-    <div>
+<div class="docs-top-bar inverted" role="banner">
+    <div id="top-bar" class="menu-bar" role="menubar">
         
             <a id="togglesidebar" class="launch icon item" tabindex="0" title="Side menu" aria-label="Side menu" role="menuitem" aria-expanded="false">
                 <i class="content icon"></i>
             </a>
         
-        <div class="item" role="menuitem">
-            <div class="header-org-logo">
-                <img src="/static/logo/Microsoft_logo_rgb_W-white_D.png" alt="Microsoft">
-            </div>
-            <div class="header-org-logo-sm">
-                <img src="/static/logo/Microsoft_logo_rgb_W-white_D-square.png" alt="Microsoft">
-            </div>
-            <div class="header-title"><span>MakeCode</span></div>
+        <div class="logo-group" role="menuitem">
+            <img class="desktop-only" src="/static/logo/Microsoft_logo_rgb_W-white_D.png" alt="Microsoft">
+            <img class="desktop-hidden" src="/static/logo/Microsoft_logo_rgb_W-white_D-square.png" alt="Microsoft">
+            <div class="header-title desktop-only"><span>MakeCode</span></div>
         </div>
     </div>
-    <div>
-        <div class="item">
-            <form id="tocsearch1" class="search" role="form" method="get" action="https://www.bing.com/search">
-                <div class="ui fluid icon input">
-                    <input type="hidden" name="q1" value="site:https://makecode.calliope.cc/" />
-                    
+    <form id="tocsearch1" class="search" method="get" action="https://www.bing.com/search" role="search">
+        <div class="ui fluid icon input">
+            <input type="hidden" name="q1" value="site:https://makecode.calliope.cc/" />
+            
                 <input type="search" name="q" placeholder="Search..." aria-label="Search Documentation">
                 <i onclick="document.getElementById('tocsearch1').submit();" tabindex="0" class="search link icon" aria-label="Search" role="button"></i>
             
-                </div>
-            </form>
         </div>
-    </div>
+    </form>
 </div>
 
 <div id="side-menu" class="ui vertical accent inverted sidebar menu left hideprint docs" role="menubar">
@@ -324,6 +316,9 @@
 
     <a class="item " href="/pxt-calliope-app/docs/save.html" role="menuitem">Save</a>
 
+
+    <a class="item " href="/pxt-calliope-app/docs/homepage-content.html" role="menuitem">Home page content</a>
+
         </div>
     </div>
 
@@ -366,23 +361,50 @@
 <!-- end include header.html -->
 
 
-				<div class="main ui container fluid mainbody">
+				<div class="main ui container fluid mainbody" role="main">
 					<button id="printbtn" class="circular ui icon right floated button hideprint hidemobile"
 						title="Print" aria-label="Print">
 						<i class="icon print"></i>
 					</button>
 					
     <div class="ui text">
-        <h1 id="extensions">Extensions</h1><h2 id="gallery"></h2><h2 id="using-extensions">Using Extensions</h2><p>In the web editor, click on <code>Settings</code> then <code>Extensions</code> to search and add extensions to the project.
-The Blocks and JavaScript definitions will be automatically loaded in the editor.</p>
-<h2 id="custom-extensions">Custom extensions</h2><p>The <a target="_blank" rel="nofollow noopener" href="https://makecode.com/extensions/getting-started">Build Your Own Extension</a> manual is for advanced users who want to publish their own extension. </p>
+        <h1 id="extensions">Extensions</h1><p>Extensions are functional code modules that are installed from outside the MakeCode editor and plug new blocks into the <strong>Toolbox</strong>. These blocks are created by other authors or organizations to do things from simplifying coding tasks to working with hardware devices.</p>
 
-    <div class="ui info message">
+    <div class="ui warning message">
         <div class="content">
-            <p><strong>Extensions</strong> were previously called <strong>Packages</strong> in MakeCode.</p>
+            <h4 id="extensions-were-known-as-packages-">Extensions were known as “Packages”</h4><p><strong>Extensions</strong> were previously called <strong>Packages</strong> in MakeCode.</p>
 
         </div>
     </div>
+<h2 id="adding-an-extension-to-a-project">Adding an extension to a project</h2><p>You can add an extension by going to <strong>Toolbox</strong> and clicking on the <strong>Extensions</strong> category.</p>
+<p><img class="ui image" src="/static/extensions/toolbox-category.png" alt="Extensions Toolbox category" loading="lazy"></p>
+<p>This will open a window giving you a place to search for extensions. Also, a selection of recommended extensions is shown for you to choose from.</p>
+<p><img class="ui image" src="/static/extensions/extensions-window.gif" alt="Extensions Window" loading="lazy"></p>
+<p>When you select an extension, you should see the new extension category appear in the Toolbox of your project.</p>
+<p><img class="ui image" src="/static/extensions/new-extension.png" alt="New added extension in Toolbox" loading="lazy"></p>
+<p>The Toolbox category will contain the extension’s blocks, ready for you to use in your project’s code.</p>
+<p><img class="ui image" src="/static/extensions/extension-blocks.png" alt="Blocks in the added extension" loading="lazy"></p>
+
+    <div class="ui info message">
+        <div class="content">
+            <h4 id="extension-gallery">Extension gallery</h4><p>For a list of extensions within categories, browse the <a  rel="nofollow noopener" href="/pxt-calliope-app/docs/extensions/extension-gallery.html">Extension Gallery</a>.</p>
+
+        </div>
+    </div>
+<h2 id="removing-an-extension-from-a-project">Removing an extension from a project</h2><p>To remove an extension from a project, click on the Language toggle to move the project into <strong>JavaScript</strong> or <strong>Python</strong> view. Then expand the <strong>Explorer</strong> view under the Calliope mini simulator. Click on the <strong>Delete</strong> button next to the extension you would like to remove.</p>
+<p><img class="ui image" src="/static/extensions/file-explorer.png" alt="File Explorer" loading="lazy"></p>
+<h2 id="what-extensions-are-loaded-in-my-project-">What extensions are loaded in my project?</h2><p>To determine which extensions your project is currently using, you can simply open the project in MakeCode and look at the Toolbox to see the custom categories that are displayed. If you need more information, such as the repository path or version of the extension, open the project in MakeCode and select <strong>Project Settings</strong> from the <strong>Settings</strong> menu in the top right corner of the screen.</p>
+<p><img class="ui image" src="/static/extensions/settings-menu.png" alt="Settings menu" loading="lazy"></p>
+<p><strong>Select Edit Settings As text</strong> button.</p>
+<p><img class="ui image" src="/static/extensions/edit-settings-button.png" alt="Edit settings button" loading="lazy"></p>
+<p>The project settings will appear as text and you can see the extensions used in your project. They are listed under <code>&quot;dependencies&quot;</code>:</p>
+<pre><code>&quot;dependencies&quot;: {
+    &quot;core&quot;: &quot;*&quot;,
+    &quot;radio&quot;: &quot;*&quot;,
+    &quot;microphone&quot;: &quot;*&quot;,
+    &quot;maqueen&quot;: &quot;github.com:dfrobot/pxt-maqueen#v1.7.2&quot;
+},</code></pre><p>The extensions with just a path of <code>&quot;*&quot;</code> are those included by default with the editor. Others are external and have a repository path, possibly with a version specified.</p>
+<h2 id="custom-extensions">Custom extensions</h2><p>The <a target="_blank" rel="nofollow noopener" href="https://makecode.com/extensions/getting-started">Build Your Own Extension</a> manual is available for advanced users who want to publish their own extension. </p>
 
     </div>
 
@@ -573,10 +595,10 @@ The Blocks and JavaScript definitions will be automatically loaded in the editor
                     if (typeof Windows !== "undefined")
                         telemetryItem.properties["WindowsApp"] = 1;
                     var userAgent = navigator.userAgent.toLowerCase();
-                    var userAgentRegexResult = /\belectron\/(\d+\.\d+\.\d+.*?)(?: |$)/i.exec(userAgent); // Example navigator.userAgent: "Mozilla/5.0 Chrome/61.0.3163.100 Electron/2.0.0 Safari/537.36"
-                    if (userAgentRegexResult) {
+                    var electronRegexResult = /\belectron\/(\d+\.\d+\.\d+.*?)(?: |$)/i.exec(userAgent); // Example navigator.userAgent: "Mozilla/5.0 Chrome/61.0.3163.100 Electron/2.0.0 Safari/537.36"
+                    if (electronRegexResult) {
                         telemetryItem.properties["Electron"] = 1;
-                        telemetryItem.properties["ElectronVersion"] = userAgentRegexResult[1];
+                        telemetryItem.properties["ElectronVersion"] = electronRegexResult[1];
                     }
                     if (typeof pxtElectron !== "undefined") {
                         telemetryItem.properties["PxtElectron"] = 1;
@@ -588,6 +610,13 @@ The Blocks and JavaScript definitions will be automatically loaded in the editor
                         telemetryItem.properties["PxtTargetVersion"] = pxtElectron.versions.pxtTargetVersion;
                         telemetryItem.properties["PxtElectronIsProd"] = pxtElectron.versions.isProd;
                     }
+                    // Kiosk UWP info is appended to the user agent by the makecode-dotnet-apps/arcade-kiosk UWP app
+                    var kioskUwpRegexResult = /\((MakeCode Arcade Kiosk UWP)\/([\S]+)\/([\S]+)\)/i.exec(userAgent); // Example navigator.userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.60 (MakeCode Arcade Kiosk UWP/0.1.41.0/Windows.Xbox)"
+                    if (kioskUwpRegexResult) {
+                        telemetryItem.properties["KioskUwp"] = 1;
+                        telemetryItem.properties["KioskUwpVersion"] = kioskUwpRegexResult[2];
+                        telemetryItem.properties["KioskUwpPlatform"] = kioskUwpRegexResult[3];
+                    }
                     return true;
                 });
             },
@@ -596,6 +625,7 @@ The Blocks and JavaScript definitions will be automatically loaded in the editor
                 disableAjaxTracking: true,
                 overridePageViewDuration: false,
                 disableExceptionTracking: true,
+                disableCorrelationHeaders: true,
                 disableCookiesUsage: !isProduction,
                 isStorageUseDisabled: !isProduction,
                 url: "/pxt-calliope-app/ai.2.min.js"

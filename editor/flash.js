@@ -236,7 +236,7 @@ class DAPWrapper {
         if (this.usesCODAL === undefined)
             console.warn('try to access codal information before it is computed');
         if (!this.usesCODAL) {
-            return ["logotouch", "builtinspeaker", "microphone", "flashlog"];
+            return ["logotouch", "flashlog"];
         }
         return [];
     }
@@ -284,12 +284,11 @@ class DAPWrapper {
         const connectionId = this.connectionId;
         this.allocDAP(); // clean dap apis
         await this.io.reconnectAsync();
+        await this.clearCommandsAsync();
         // halt before reading from dap
         // to avoid interference from data logger
         await this.cortexM.halt();
-        // before calling into dapjs, we use our dapCmdNums() a few times, which which will make sure the responses
-        // to commends from previous sessions (if any) are flushed
-        const info = await this.dapCmdNums(0x00, 0x04); // info
+        const info = await this.getDaplinkVersionAsync(); // info
         const daplinkVersion = stringResponse(info);
         log(`daplink version: ${daplinkVersion}`);
         const r = await this.dapCmdNums(0x80);
@@ -314,12 +313,25 @@ class DAPWrapper {
         // start jacdac, serial async
         this.startReadSerial(connectionId);
     }
+    async clearCommandsAsync() {
+        // before calling into dapjs, push through a few commands to make sure the responses
+        // to commands from previous sessions (if any) are flushed. Count of 5 is arbitrary.
+        for (let i = 0; i < 5; i++) {
+            try {
+                await this.getDaplinkVersionAsync();
+            }
+            catch (e) { }
+        }
+    }
+    async getDaplinkVersionAsync() {
+        return await this.dapCmdNums(0x00, 0x04);
+    }
     async checkStateAsync(resume) {
         const states = ["reset", "lockup", "sleeping", "halted", "running"];
         try {
             const state = await this.cortexM.getState();
             log(`cortex state: ${states[state]}`);
-            if (resume && state == 3 /* TARGET_HALTED */)
+            if (resume && state == 3 /* DapJS.CoreState.TARGET_HALTED */)
                 await this.cortexM.resume();
         }
         catch (e) {
@@ -351,6 +363,7 @@ class DAPWrapper {
         if (!this.io.isConnected()) {
             await this.io.reconnectAsync();
         }
+        await this.clearCommandsAsync();
         await this.stopReadersAsync();
         await this.cortexM.init();
         await this.cortexM.reset(true);
@@ -524,9 +537,9 @@ class DAPWrapper {
         const runFlash = async (b, dataAddr) => {
             const cmd = this.cortexM.prepareCommand();
             cmd.halt();
-            cmd.writeCoreRegister(15 /* PC */, loadAddr + 4 + 1);
-            cmd.writeCoreRegister(14 /* LR */, loadAddr + 1);
-            cmd.writeCoreRegister(13 /* SP */, stackAddr);
+            cmd.writeCoreRegister(15 /* DapJS.CortexReg.PC */, loadAddr + 4 + 1);
+            cmd.writeCoreRegister(14 /* DapJS.CortexReg.LR */, loadAddr + 1);
+            cmd.writeCoreRegister(13 /* DapJS.CortexReg.SP */, stackAddr);
             cmd.writeCoreRegister(0, b.targetAddr);
             cmd.writeCoreRegister(1, dataAddr);
             cmd.writeCoreRegister(2, this.pageSize >> 2);
@@ -712,7 +725,7 @@ class DAPWrapper {
                 return;
             const info = await this.readBytes(xchg, 16);
             if (info[12 + 2] != 0xff) {
-                log("jacdac: invalid memory; try power-cycling the micro:bit");
+                log("jacdac: invalid memory; try power-cycling the Calliope mini");
                 pxt.tickEvent("hid.flash.jacdac.error.invalidmemory");
                 console.debug({ info, xchg });
                 return;
