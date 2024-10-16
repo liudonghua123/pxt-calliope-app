@@ -205,6 +205,7 @@
         "incompatibleHardwareHelpURL": "/device/v2",
         "dragFileImage": "docs/static/download/transfer.png",
         "connectDeviceImage": "docs/static/download/connect.png",
+        "disconnectDeviceImage": "docs/static/download/full-reset.gif",
         "selectDeviceImage": "docs/static/download/pair.png",
         "connectionSuccessImage": "docs/static/download/connected.png",
         "checkFirmwareVersionImage": "docs/static/download/firmware.png",

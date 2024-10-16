@@ -3234,6 +3234,8 @@ const dataAddr = 0x20002000;
 const stackAddr = 0x20001000;
 const FULL_FLASH_TIMEOUT = 100000; // 100s
 const PARTIAL_FLASH_TIMEOUT = 60000; // 60s
+const CONNECTION_CHECK_TIMEOUT = 2000; // 2s
+const RETRY_DAP_CMD_TIMEOUT = 50; // .05s
 const flashPageBIN = new Uint32Array([
     0xbe00be00,
     0x2502b5f0, 0x4c204b1f, 0xf3bf511d, 0xf3bf8f6f, 0x25808f4f, 0x002e00ed,
@@ -3539,13 +3541,22 @@ class DAPWrapper {
         this.startReadSerial(connectionId);
     }
     async clearCommandsAsync() {
-        // before calling into dapjs, push through a few commands to make sure the responses
-        // to commands from previous sessions (if any) are flushed. Count of 5 is arbitrary.
-        for (let i = 0; i < 5; i++) {
-            try {
-                await this.getDaplinkVersionAsync();
-            }
-            catch (e) { }
+        try {
+            await pxt.Util.promiseTimeout(CONNECTION_CHECK_TIMEOUT, (async () => {
+                // before calling into dapjs, push through a few commands to make sure the responses
+                // to commands from previous sessions (if any) are flushed. Count of 5 is arbitrary.
+                for (let i = 0; i < 5; i++) {
+                    try {
+                        await this.getDaplinkVersionAsync();
+                    }
+                    catch (e) { }
+                }
+            })());
+        }
+        catch (e) {
+            const errOut = new Error(e);
+            errOut.type = "inittimeout";
+            throw errOut;
         }
     }
     async getDaplinkVersionAsync() {
@@ -3588,8 +3599,8 @@ class DAPWrapper {
         if (!this.io.isConnected()) {
             await this.io.reconnectAsync();
         }
-        await this.clearCommandsAsync();
         await this.stopReadersAsync();
+        await this.clearCommandsAsync();
         await this.cortexM.init();
         await this.cortexM.reset(true);
         await this.checkStateAsync();
@@ -3618,11 +3629,11 @@ class DAPWrapper {
         // the micro:bit will automatically disconnect and reconnect
         // via the webusb events
     }
-    recvPacketAsync() {
+    recvPacketAsync(timeout) {
         if (this.io.recvPacketAsync)
-            return this.io.recvPacketAsync();
+            return this.io.recvPacketAsync(timeout);
         else
-            return this.pbuf.shiftAsync();
+            return this.pbuf.shiftAsync(timeout);
     }
     async dapCmd(buf) {
         await this.io.sendPacketAsync(buf);
@@ -3634,13 +3645,15 @@ class DAPWrapper {
             // response is a left-over from previous communications
             log(msg + "; retrying");
             try {
-                const secondTryResp = await this.recvPacketAsync();
+                // Add in a timeout, as this can stall if device thinks communication is complete.
+                const secondTryResp = await this.recvPacketAsync(RETRY_DAP_CMD_TIMEOUT);
                 if (secondTryResp[0] === buf[0]) {
                     log(msg + "; retry success");
                     return secondTryResp;
                 }
             }
             catch (e) {
+                pxt.tickEvent('hid.flash.cmderror.retryfailed', { req: buf[0], resp: resp[0] });
                 log(e);
             }
             throw new Error(`retry failed ${msg}`);
@@ -4069,7 +4082,6 @@ function patchBlocks(pkgTargetVersion, dom) {
             .concat(pxt.U.toArray(dom.querySelectorAll("shadow[type=device_get_analog_pin]")))
             .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_analog_pin]")))
             .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_analog_period]")))
-            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=pins_on_pulsed]")))
             .concat(pxt.U.toArray(dom.querySelectorAll("block[type=pins_pulse_in]")))
             .concat(pxt.U.toArray(dom.querySelectorAll("shadow[type=pins_pulse_in]")))
             .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_servo_pin]")))
@@ -4097,7 +4109,6 @@ function patchBlocks(pkgTargetVersion, dom) {
                     case "pin_set_audio_pin":
                         return oldPinNode.getAttribute("name") === "name";
                     case "device_set_analog_period":
-                    case "pins_on_pulsed":
                     case "device_set_pull":
                     case "device_set_pin_events":
                     case "pin_neopixel_matrix_width":
@@ -4112,9 +4123,11 @@ function patchBlocks(pkgTargetVersion, dom) {
                 .forEach(oldPinNode => {
                 const valueNode = node.ownerDocument.createElement("value");
                 valueNode.setAttribute("name", oldPinNode.getAttribute("name"));
+                let nodeText = oldPinNode.textContent;
                 const pinShadowNode = node.ownerDocument.createElement("shadow");
+                const [enumName, pinName] = nodeText.split(".");
                 let pinBlockType;
-                switch (oldPinNode.textContent.split(".")[0]) {
+                switch (enumName) {
                     case "DigitalPin":
                         pinBlockType = "digital_pin_shadow";
                         break;
@@ -4124,10 +4137,30 @@ function patchBlocks(pkgTargetVersion, dom) {
                 }
                 if (!pinBlockType)
                     return;
+                // If this is one of the read/write pins, narrow to the read write shadow
+                if (blockType === "device_get_analog_pin") {
+                    switch (pinName) {
+                        case "P0":
+                        case "P1":
+                        case "P2":
+                        case "P4":
+                        case "C4":
+                        case "P10":
+                        case "C10":
+                        case "P16":
+                        case "C16":
+                        case "A1_RX":
+                        case "P18":
+                        case "C18":
+                            pinBlockType = "analog_read_write_pin_shadow";
+                            nodeText = `AnalogReadWritePin.${pinName}`;
+                            break;
+                    }
+                }
                 pinShadowNode.setAttribute("type", pinBlockType);
                 const fieldNode = node.ownerDocument.createElement("field");
                 fieldNode.setAttribute("name", "pin");
-                fieldNode.textContent = oldPinNode.textContent;
+                fieldNode.textContent = nodeText;
                 pinShadowNode.appendChild(fieldNode);
                 valueNode.appendChild(pinShadowNode);
                 node.replaceChild(valueNode, oldPinNode);

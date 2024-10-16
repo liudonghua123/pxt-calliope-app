@@ -26,7 +26,6 @@ function patchBlocks(pkgTargetVersion, dom) {
             .concat(pxt.U.toArray(dom.querySelectorAll("shadow[type=device_get_analog_pin]")))
             .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_analog_pin]")))
             .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_analog_period]")))
-            .concat(pxt.U.toArray(dom.querySelectorAll("block[type=pins_on_pulsed]")))
             .concat(pxt.U.toArray(dom.querySelectorAll("block[type=pins_pulse_in]")))
             .concat(pxt.U.toArray(dom.querySelectorAll("shadow[type=pins_pulse_in]")))
             .concat(pxt.U.toArray(dom.querySelectorAll("block[type=device_set_servo_pin]")))
@@ -54,7 +53,6 @@ function patchBlocks(pkgTargetVersion, dom) {
                     case "pin_set_audio_pin":
                         return oldPinNode.getAttribute("name") === "name";
                     case "device_set_analog_period":
-                    case "pins_on_pulsed":
                     case "device_set_pull":
                     case "device_set_pin_events":
                     case "pin_neopixel_matrix_width":
@@ -69,9 +67,11 @@ function patchBlocks(pkgTargetVersion, dom) {
                 .forEach(oldPinNode => {
                 const valueNode = node.ownerDocument.createElement("value");
                 valueNode.setAttribute("name", oldPinNode.getAttribute("name"));
+                let nodeText = oldPinNode.textContent;
                 const pinShadowNode = node.ownerDocument.createElement("shadow");
+                const [enumName, pinName] = nodeText.split(".");
                 let pinBlockType;
-                switch (oldPinNode.textContent.split(".")[0]) {
+                switch (enumName) {
                     case "DigitalPin":
                         pinBlockType = "digital_pin_shadow";
                         break;
@@ -81,10 +81,30 @@ function patchBlocks(pkgTargetVersion, dom) {
                 }
                 if (!pinBlockType)
                     return;
+                // If this is one of the read/write pins, narrow to the read write shadow
+                if (blockType === "device_get_analog_pin") {
+                    switch (pinName) {
+                        case "P0":
+                        case "P1":
+                        case "P2":
+                        case "P4":
+                        case "C4":
+                        case "P10":
+                        case "C10":
+                        case "P16":
+                        case "C16":
+                        case "A1_RX":
+                        case "P18":
+                        case "C18":
+                            pinBlockType = "analog_read_write_pin_shadow";
+                            nodeText = `AnalogReadWritePin.${pinName}`;
+                            break;
+                    }
+                }
                 pinShadowNode.setAttribute("type", pinBlockType);
                 const fieldNode = node.ownerDocument.createElement("field");
                 fieldNode.setAttribute("name", "pin");
-                fieldNode.textContent = oldPinNode.textContent;
+                fieldNode.textContent = nodeText;
                 pinShadowNode.appendChild(fieldNode);
                 valueNode.appendChild(pinShadowNode);
                 node.replaceChild(valueNode, oldPinNode);
