@@ -10,13 +10,18 @@
     {
         "name": "Workbook",
         "url": "/calliope/arbeitsheft",
-        "imageUrl": "/docs/static/calliope/arbeitsheft/EN/18-4_led-matrix.png",
+        "imageUrl": "/docs/static/calliope/arbeitsheft/calliope_arbeitsheft_makecode.png",
         "largeImageUrl": "/docs/static/calliope/arbeitsheft/EN/18-4_led-matrix.png"
+    },
+    {
+        "name": "Jacdac",
+        "url": "/calliope/jacdac",
+        "imageUrl": "/docs/static/calliope/jacdac/jacdac-vorschau.png"
     },
     {
         "name": "Calliope Links",
         "url": "/calliope/links",
-        "imageUrl": "/docs/static/calliope/links/thumbnail_shop.gif"
+        "imageUrl": "/docs/static/calliope/links/EN/calliope_pr_makecode.png"
     }
 ]
 ```
@@ -25,5 +30,6 @@
 
 [Tutorials](/calliope/tutorials),
 [Workbook](/calliope/arbeitsheft),
+[Jacdac](/calliope/jacdac),
 [Calliope Links](/calliope/links)
 
